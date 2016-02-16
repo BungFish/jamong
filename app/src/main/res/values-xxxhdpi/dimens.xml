@@ -1,0 +1,41 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_title_text_size">20dp</dimen>
+
+    <dimen name="nav_drawer_width">300dp</dimen>
+    <dimen name="nav_title_height">100dp</dimen>
+    <dimen name="nav_title_text_size">20dp</dimen>
+
+    <dimen name="nav_menu_height">217dp</dimen>
+
+    <dimen name="nav_menu_margin_top">12dp</dimen>
+    <dimen name="nav_menu_margin_botoom">12dp</dimen>
+    <dimen name="nav_menu_image_margin_left_right">30dp</dimen>
+    <dimen name="nav_menu_image_size">30dp</dimen>
+    <dimen name="nav_menu_text_size">18dp</dimen>
+    <dimen name="nav_menu_carrot_margin_left_right">15dp</dimen>
+
+    <dimen name="item_offset">8dp</dimen>
+    <dimen name="item2_offset">15dp</dimen>
+    <dimen name="circular_offset">15dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="text_size">12dp</dimen>
+    <dimen name="snackbar_text_size">12dp</dimen>
+
+    <dimen name="circular_width_size">70dp</dimen>
+    <dimen name="circular_height_size">70dp</dimen>
+    <dimen name="circular_thickness">8dp</dimen>
+
+    <dimen name="home_card_name_size">24dp</dimen>
+    <dimen name="home_card_info_size1">24dp</dimen>
+    <dimen name="home_card_info_size2">14dp</dimen>
+    <dimen name="home_card_info_size3">14dp</dimen>
+    <dimen name="home_card_detail">20dp</dimen>
+
+    <dimen name="layout_width">280dp</dimen>
+    <dimen name="myham_width">350dp</dimen>
+
+</resources>

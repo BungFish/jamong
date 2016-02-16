@@ -1,0 +1,205 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/nav_drawer_width"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/fragment_navigation_drawer"
+    android:orientation="vertical"
+    tools:context="com.example.young_jin.fragments.NavigationDrawerFragment">
+
+    <LinearLayout
+        android:id="@+id/containerDrawerImage"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_title_height"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/logoff"
+            android:padding="10dp"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="@dimen/nav_menu_image_size"
+                android:layout_height="match_parent"
+                android:tint="@color/red"
+                android:src="@drawable/ic_cast_dark" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="admin"
+            android:textColor="@color/icons"
+            android:textSize="@dimen/nav_title_text_size"
+            android:id="@+id/username"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 님"
+            android:textSize="15dp"
+            android:textColor="@color/icons"
+            android:id="@+id/textView6" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MY HAM"
+                android:textColor="@color/icons"
+                android:layout_gravity="right"
+                android:padding="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ic_cast_dark"
+                android:id="@+id/myham" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="@dimen/nav_menu_height">
+
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/secondary_text"
+            android:layout_below="@+id/containerDrawerImage"
+            android:id="@+id/drawerList"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/drawerList"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_cast_dark"
+                android:id="@+id/imageView2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:text="긴급출동"
+                android:id="@+id/textView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_cast_dark"
+                android:id="@+id/imageView3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:text="공지사항"
+                android:id="@+id/textView4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_cast_dark"
+                android:id="@+id/imageView4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:text="설정"
+                android:id="@+id/textView5" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="0dp"
+        android:layout_weight="0.3">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/icons">
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:textSize="10dp"
+                android:text="SK네트웍스(주) 고객센터 1600-1016" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:textSize="10dp"
+                android:text="HAPPYAUTOMEMBERS 2015 ALL RIGHTS RESERVED" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

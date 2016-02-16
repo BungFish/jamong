@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <!--<ImageView-->
+        <!--android:layout_width="55dp"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:src="@drawable/ic_cast_dark" />-->
+
+    <TextView
+        android:id="@+id/gas_station_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="1120원"
+        android:background="@color/icons"
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -26,7 +26,6 @@ dependencies {
     compile 'com.android.support:design:23.+'
     compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.android.support:support-v13:+'
-    compile 'com.sothree.slidinguppanel:library:3.2.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.maps.android:android-maps-utils:0.3+'

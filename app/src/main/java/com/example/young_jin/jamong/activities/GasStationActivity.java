@@ -86,9 +86,7 @@ public class GasStationActivity extends ActionBarActivity {
         mFragmentAdapter = new FragmentAdpater(getSupportFragmentManager());
         GasStationMapFragment gasStationMapFragment = GasStationMapFragment.newInstance();
         mFragmentAdapter.addFragment(gasStationMapFragment, "지도");
-        mFragmentAdapter.addFragment(GasStationListFragment.newInstance(), "목록");
-
-//        getSupportFragmentManager().beginTransaction().replace(R.id.map_context, GasStationListFragment.newInstance()).commit();
+//        mFragmentAdapter.addFragment(GasStationListFragment.newInstance(), "목록");
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);

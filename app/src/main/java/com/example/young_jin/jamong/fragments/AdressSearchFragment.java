@@ -18,9 +18,12 @@ import com.example.young_jin.jamong.R;
 public class AdressSearchFragment extends Fragment {
 
     private FragmentManager fragmentManager;
+    private static AdressSearchFragment fragment;
 
     public static AdressSearchFragment newInstance() {
-        AdressSearchFragment fragment = new AdressSearchFragment();
+        if(fragment == null) {
+            fragment = new AdressSearchFragment();
+        }
         return fragment;
     }
 
@@ -38,6 +41,8 @@ public class AdressSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View layout = inflater.inflate(R.layout.fragment_adress_search, container, false);
+
+        fragmentManager = getChildFragmentManager();
 
         View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
@@ -59,8 +64,6 @@ public class AdressSearchFragment extends Fragment {
                 }
             }
         };
-
-        fragmentManager = getFragmentManager();
 
         Button cities = (Button) layout.findViewById(R.id.cities);
         cities.setOnFocusChangeListener(onFocusChangeListener);

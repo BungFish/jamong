@@ -15,8 +15,12 @@ import com.example.young_jin.jamong.R;
  */
 public class SearchSettingFragment extends Fragment {
 
+    private static SearchSettingFragment fragment;
+
     public static SearchSettingFragment newInstance() {
-        SearchSettingFragment fragment = new SearchSettingFragment();
+        if(fragment == null) {
+            fragment = new SearchSettingFragment();
+        }
         return fragment;
     }
 

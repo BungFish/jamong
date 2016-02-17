@@ -15,8 +15,12 @@ import com.example.young_jin.jamong.models.GasStation;
  */
 public class DistrictsFragment extends Fragment {
 
+    private static DistrictsFragment fragment;
+
     public static DistrictsFragment newInstance() {
-        DistrictsFragment fragment = new DistrictsFragment();
+        if (fragment == null) {
+            fragment = new DistrictsFragment();
+        }
         return fragment;
     }
 

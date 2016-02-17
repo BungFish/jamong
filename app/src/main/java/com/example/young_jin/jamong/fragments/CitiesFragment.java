@@ -13,8 +13,12 @@ import com.example.young_jin.jamong.R;
  */
 public class CitiesFragment extends Fragment {
 
+    private static CitiesFragment fragment;
+
     public static CitiesFragment newInstance() {
-        CitiesFragment fragment = new CitiesFragment();
+        if (fragment == null) {
+            fragment = new CitiesFragment();
+        }
         return fragment;
     }
 

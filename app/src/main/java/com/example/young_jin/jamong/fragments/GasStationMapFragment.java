@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -20,17 +19,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,7 +36,6 @@ import android.widget.Toast;
 import com.example.young_jin.jamong.R;
 import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
-import com.example.young_jin.jamong.activities.GasStationListActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
 import com.example.young_jin.jamong.adpaters.GasStationAdapter;
 import com.example.young_jin.jamong.models.GasStation;
@@ -83,8 +79,8 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
     private TextView station_name;
     private TextView station_adress;
     private TextView station_phone;
-    private Animation sale_up_anim;
-    private Animation sale_down_anim;
+    private Animation slide_up_anim;
+    private Animation slide_down_anim;
     private RelativeLayout map_layout;
     private GasStationAdapter.ClickListener clickListener;
     private SlidingUpPanelLayout slidingUpPanelLayout;
@@ -100,6 +96,9 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
     private TextView repair;
     private TextView wash;
     private TextView distance;
+    private LinearLayout sub_layout;
+    private int heightOfScreen;
+    private View view_instance;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -145,8 +144,8 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         View layout = inflater.inflate(R.layout.fragment_gas_station_map, container, false);
         this.alist = MainActivity.alist;
 
-        sale_up_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-        sale_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
+        slide_up_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+        slide_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
 
         detail_view = (LinearLayout) layout.findViewById(R.id.detail_view);
         station_name = (TextView) layout.findViewById(R.id.station_name);
@@ -166,9 +165,9 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
 
         map_layout = (RelativeLayout) layout.findViewById(R.id.map_layout);
         DisplayMetrics dM = getActivity().getResources().getDisplayMetrics();
-        int heightOfScreen = dM.heightPixels;
+        heightOfScreen = dM.heightPixels;
         //상세정보 레이아웃 높이 설정
-        View view_instance = (View)detail_view;
+        view_instance = (View)detail_view;
         ViewGroup.LayoutParams params = view_instance.getLayoutParams();
         params.height = (int) (heightOfScreen * 0.4);
         view_instance.setLayoutParams(params);
@@ -218,7 +217,7 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
             public void onMapClick(LatLng latLng) {
                 if (detail_view.getVisibility() == View.VISIBLE) {
                     detail_view.setVisibility(View.GONE);
-                    detail_view.startAnimation(sale_down_anim);
+                    detail_view.startAnimation(slide_down_anim);
                 }
             }
         });
@@ -320,16 +319,17 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         toolbar2 = (Toolbar) layout.findViewById(R.id.app_bar2);
         toolbar_title2 = (TextView) toolbar2.findViewById(R.id.toolbar_title);
 
-        slidingUpPanelLayout = (SlidingUpPanelLayout) layout.findViewById(R.id.sliding_layout);
-        slidingUpPanelLayout.setTouchEnabled(false);
-        fragmentManager = getFragmentManager();
+        sub_layout = (LinearLayout) layout.findViewById(R.id.sub_layout);
+
+        fragmentManager = getChildFragmentManager();
 
         View cover = layout.findViewById(R.id.coverLyaout);
         cover.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                if (sub_layout.getVisibility() == View.VISIBLE) {
+                    sub_layout.setVisibility(View.GONE);
+                    sub_layout.startAnimation(slide_down_anim);
                     return true;
                 }
                 return false;
@@ -340,11 +340,18 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                if (sub_layout.getVisibility() == View.GONE) {
                     fragmentManager.beginTransaction().replace(R.id.sub_context, AdressSearchFragment.newInstance()).commit();
                     toolbar_title2.setText("주소검색");
-                    slidingUpPanelLayout.setAnchorPoint(0.8f);
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+                    view_instance = (View)sub_layout;
+                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
+                    params.height = (int) (heightOfScreen * 0.7);
+                    view_instance.setLayoutParams(params);
+
+                    sub_layout.setVisibility(View.VISIBLE);//0.8
+                    sub_layout.startAnimation(slide_up_anim);
+
 
                 }
             }
@@ -362,11 +369,17 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                if (sub_layout.getVisibility() == View.GONE) {
                     fragmentManager.beginTransaction().replace(R.id.sub_context, SearchSettingFragment.newInstance()).commit();
                     toolbar_title2.setText("검색설정");
-                    slidingUpPanelLayout.setAnchorPoint(0.45f);
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+                    view_instance = (View)sub_layout;
+                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
+                    params.height = (int) (heightOfScreen * 0.4);
+                    view_instance.setLayoutParams(params);
+
+                    sub_layout.setVisibility(View.VISIBLE);//0.45
+                    sub_layout.startAnimation(slide_up_anim);
                 }
             }
         });
@@ -442,9 +455,10 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
                     @Override
                     public boolean onClusterItemClick(GasStationMarker marker) {
                         station_name.setText(marker.getGasStation().getmTItle());
-                        distance.setText(marker.getGasStation().getmDistance()+"");
+                        distance.setText(String.format("%.1fkm", marker.getGasStation().getmDistance() / 1000));
                         station_adress.setText(marker.getGasStation().getmAddress());
-                        station_phone.setText(marker.getGasStation().getmPhone());
+                        station_phone.setText(PhoneNumberUtils.formatNumber(marker.getGasStation().getmPhone()));
+
 //                        gas.setText(marker.getGasStation().getmTItle());
 //                        disel.setText(marker.getGasStation().getmAddress());
 //                        hgas.setText(marker.getGasStation().getmPhone());
@@ -476,7 +490,7 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
 
                         if(detail_view.getVisibility() == View.GONE) {
                             detail_view.setVisibility(View.VISIBLE);
-                            detail_view.startAnimation(sale_up_anim);
+                            detail_view.startAnimation(slide_up_anim);
                         }
 
                         return false;
@@ -613,10 +627,11 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
 
         if(detail_view.getVisibility() == View.VISIBLE){
             detail_view.setVisibility(View.GONE);
-            detail_view.startAnimation(sale_down_anim);
+            detail_view.startAnimation(slide_down_anim);
         } else {
-            if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            if (sub_layout.getVisibility() == View.VISIBLE) {
+                sub_layout.setVisibility(View.GONE);
+                sub_layout.startAnimation(slide_down_anim);
             } else {
                 GasStationActivity activity = (GasStationActivity) getActivity();
                 activity.setOnKeyBackPressedListener(null);

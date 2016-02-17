@@ -173,10 +173,10 @@ public class GasStationMapFragment extends Fragment {
         mapCircle = map.addCircle(new CircleOptions().radius(3000).center(current_location).fillColor(getResources().getColor(R.color.colorMapRadius)).
                 strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
 
-//        map.addMarker(new MarkerOptions()
-//                .title("현재위치")
-//                .snippet("현재위치입니다.")
-//                .position(current_location));
+        map.addMarker(new MarkerOptions()
+                .title("현재위치")
+                .snippet("현재위치입니다.")
+                .position(current_location));
 
 //        new CurrentLocationTask().execute(location);
 

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.young_jin.jamong.activities.GasStationActivity;
+import com.example.young_jin.jamong.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,12 +184,17 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
     public void itemClick(View view, int position) {
             switch (position) {
                 case 0:
-                    Intent intent = new Intent(getActivity(), GasStationActivity.class);
+                    if(MainActivity.alist==null){
+                        Toast.makeText(getActivity(), "데이터가 없습니다", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(getActivity(), GasStationActivity.class);
 
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
 
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+                    }
+
                     break;
                 default:
                     Toast.makeText(getActivity(), "개발중인 메뉴입니다 조금만 기다려주세요!", Toast.LENGTH_SHORT).show();

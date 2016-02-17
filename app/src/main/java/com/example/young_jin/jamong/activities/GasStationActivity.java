@@ -3,6 +3,7 @@ package com.example.young_jin.jamong.activities;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -72,10 +73,8 @@ public class GasStationActivity extends ActionBarActivity {
         setContentView(R.layout.activity_gas_station);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar2 = (Toolbar) findViewById(R.id.app_bar2);
+
         toolbar_title = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        toolbar_title2 = (TextView) toolbar2.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar_title.setText(getSupportActionBar().getTitle());
@@ -85,66 +84,19 @@ public class GasStationActivity extends ActionBarActivity {
         // primary sections of the activity.
 
         mFragmentAdapter = new FragmentAdpater(getSupportFragmentManager());
-        mFragmentAdapter.addFragment(GasStationMapFragment.newInstance(), "지도");
+        GasStationMapFragment gasStationMapFragment = GasStationMapFragment.newInstance();
+        mFragmentAdapter.addFragment(gasStationMapFragment, "지도");
         mFragmentAdapter.addFragment(GasStationListFragment.newInstance(), "목록");
+
+//        getSupportFragmentManager().beginTransaction().replace(R.id.map_context, GasStationListFragment.newInstance()).commit();
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mFragmentAdapter);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+//        tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(mViewPager);
 
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        slidingUpPanelLayout.setTouchEnabled(false);
-        fragmentManager = getFragmentManager();
-
-        View cover = findViewById(R.id.coverLyaout);
-        cover.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    fragmentManager.beginTransaction().replace(R.id.sub_context, AdressSearchFragment.newInstance()).commit();
-                    toolbar_title2.setText("주소검색");
-                    slidingUpPanelLayout.setAnchorPoint(0.8f);
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-
-                }
-            }
-        });
-
-        Button button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GasStationMapFragment.gotoMylocation();
-            }
-        });
-
-        Button button3 = (Button) findViewById(R.id.button3);
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    fragmentManager.beginTransaction().replace(R.id.sub_context, SearchSettingFragment.newInstance()).commit();
-                    toolbar_title2.setText("검색설정");
-                    slidingUpPanelLayout.setAnchorPoint(0.45f);
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                }
-            }
-        });
 
     }
 
@@ -163,7 +115,13 @@ public class GasStationActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.view_station_list) {
+            Intent intent = new Intent(this, GasStationListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            startActivity(intent);
+
+            overridePendingTransition(R.anim.slide_up, R.anim.hold);
             return true;
         }
         if (id == android.R.id.home) {
@@ -175,16 +133,18 @@ public class GasStationActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//
-//        if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-//            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//        } else {
-//            super.onBackPressed();
-//        }
-//
-//    }
+    @Override
+    public void onBackPressed() {
+
+        if (mOnKeyBackPressedListener != null) {
+            mOnKeyBackPressedListener.onBack();
+        } else {
+
+            super.onBackPressed();
+
+        }
+
+    }
 
     public interface onKeyBackPressedListener {
         public void onBack();

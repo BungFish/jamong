@@ -18,9 +18,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -36,7 +39,9 @@ import android.widget.Toast;
 import com.example.young_jin.jamong.R;
 import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
+import com.example.young_jin.jamong.activities.GasStationListActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
+import com.example.young_jin.jamong.adpaters.GasStationAdapter;
 import com.example.young_jin.jamong.models.GasStation;
 import com.example.young_jin.jamong.models.GasStationMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,6 +56,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
 import java.io.IOException;
@@ -60,7 +66,7 @@ import java.util.List;
 /**
  * Created by Young-Jin on 2016-02-14.
  */
-public class GasStationMapFragment extends Fragment {
+public class GasStationMapFragment extends Fragment implements GasStationActivity.onKeyBackPressedListener {
 
     private static final String DESCRIBABLE_KEY = "Jamong";
 
@@ -80,6 +86,20 @@ public class GasStationMapFragment extends Fragment {
     private Animation sale_up_anim;
     private Animation sale_down_anim;
     private RelativeLayout map_layout;
+    private GasStationAdapter.ClickListener clickListener;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+    private FragmentManager fragmentManager;
+    private Toolbar toolbar2;
+    private TextView toolbar_title2;
+    private TextView gas;
+    private TextView disel;
+    private TextView hgas;
+    private TextView conv_store;
+    private TextView self;
+    private TextView direct;
+    private TextView repair;
+    private TextView wash;
+    private TextView distance;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -104,6 +124,7 @@ public class GasStationMapFragment extends Fragment {
         if(fragment==null) {
             fragment = new GasStationMapFragment();
         }
+
         return fragment;
     }
 
@@ -129,8 +150,19 @@ public class GasStationMapFragment extends Fragment {
 
         detail_view = (LinearLayout) layout.findViewById(R.id.detail_view);
         station_name = (TextView) layout.findViewById(R.id.station_name);
+        distance = (TextView) layout.findViewById(R.id.distance);
         station_adress = (TextView) layout.findViewById(R.id.station_adress);
         station_phone = (TextView) layout.findViewById(R.id.station_phone);
+        gas = (TextView) layout.findViewById(R.id.gas);
+        disel = (TextView) layout.findViewById(R.id.disel);
+
+        hgas = (TextView) layout.findViewById(R.id.hgas);
+        conv_store = (TextView) layout.findViewById(R.id.conv_store);
+        self = (TextView) layout.findViewById(R.id.self);
+        direct = (TextView) layout.findViewById(R.id.direct);
+        repair = (TextView) layout.findViewById(R.id.repair);
+        wash = (TextView) layout.findViewById(R.id.wash);
+
 
         map_layout = (RelativeLayout) layout.findViewById(R.id.map_layout);
         DisplayMetrics dM = getActivity().getResources().getDisplayMetrics();
@@ -138,7 +170,7 @@ public class GasStationMapFragment extends Fragment {
         //상세정보 레이아웃 높이 설정
         View view_instance = (View)detail_view;
         ViewGroup.LayoutParams params = view_instance.getLayoutParams();
-        params.height = (int) (heightOfScreen*0.3);
+        params.height = (int) (heightOfScreen * 0.4);
         view_instance.setLayoutParams(params);
 
 
@@ -184,7 +216,7 @@ public class GasStationMapFragment extends Fragment {
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if(detail_view.getVisibility() == View.VISIBLE) {
+                if (detail_view.getVisibility() == View.VISIBLE) {
                     detail_view.setVisibility(View.GONE);
                     detail_view.startAnimation(sale_down_anim);
                 }
@@ -206,8 +238,8 @@ public class GasStationMapFragment extends Fragment {
                                 switch (which) {
                                     case 0:
                                         for (GasStation gasStation : alist) {
-                                            if (gasStation.getmDistance()/1000 <= 1) {
-                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()),gasStation));
+                                            if (gasStation.getmDistance() / 1000 <= 1) {
+                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()), gasStation));
                                             }
                                         }
                                         mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
@@ -221,8 +253,8 @@ public class GasStationMapFragment extends Fragment {
                                         break;
                                     case 1:
                                         for (GasStation gasStation : alist) {
-                                            if (gasStation.getmDistance()/1000 <= 3) {
-                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()),gasStation));
+                                            if (gasStation.getmDistance() / 1000 <= 3) {
+                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()), gasStation));
                                             }
                                         }
                                         mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
@@ -236,8 +268,8 @@ public class GasStationMapFragment extends Fragment {
                                         break;
                                     case 2:
                                         for (GasStation gasStation : alist) {
-                                            if (gasStation.getmDistance()/1000 <= 5) {
-                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()),gasStation));
+                                            if (gasStation.getmDistance() / 1000 <= 5) {
+                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()), gasStation));
                                             }
                                         }
                                         mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
@@ -250,8 +282,8 @@ public class GasStationMapFragment extends Fragment {
                                         break;
                                     case 3:
                                         for (GasStation gasStation : alist) {
-                                            if (gasStation.getmDistance()/1000 <= 10) {
-                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()),gasStation));
+                                            if (gasStation.getmDistance() / 1000 <= 10) {
+                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()), gasStation));
                                             }
                                         }
                                         mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
@@ -264,8 +296,8 @@ public class GasStationMapFragment extends Fragment {
                                         break;
                                     case 4:
                                         for (GasStation gasStation : alist) {
-                                            if (gasStation.getmDistance()/1000 <= 20) {
-                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()),gasStation));
+                                            if (gasStation.getmDistance() / 1000 <= 20) {
+                                                mClusterManager.addItem(new GasStationMarker(new LatLng(gasStation.getmLatitude(), gasStation.getmLongitude()), gasStation));
                                             }
                                         }
                                         mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
@@ -281,6 +313,61 @@ public class GasStationMapFragment extends Fragment {
                                 dialog.cancel();
                             }
                         }).show();
+            }
+        });
+
+
+        toolbar2 = (Toolbar) layout.findViewById(R.id.app_bar2);
+        toolbar_title2 = (TextView) toolbar2.findViewById(R.id.toolbar_title);
+
+        slidingUpPanelLayout = (SlidingUpPanelLayout) layout.findViewById(R.id.sliding_layout);
+        slidingUpPanelLayout.setTouchEnabled(false);
+        fragmentManager = getFragmentManager();
+
+        View cover = layout.findViewById(R.id.coverLyaout);
+        cover.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        Button button = (Button) layout.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    fragmentManager.beginTransaction().replace(R.id.sub_context, AdressSearchFragment.newInstance()).commit();
+                    toolbar_title2.setText("주소검색");
+                    slidingUpPanelLayout.setAnchorPoint(0.8f);
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+                }
+            }
+        });
+
+        Button button2 = (Button) layout.findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GasStationMapFragment.gotoMylocation();
+            }
+        });
+
+        Button button3 = (Button) layout.findViewById(R.id.button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    fragmentManager.beginTransaction().replace(R.id.sub_context, SearchSettingFragment.newInstance()).commit();
+                    toolbar_title2.setText("검색설정");
+                    slidingUpPanelLayout.setAnchorPoint(0.45f);
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                }
             }
         });
 
@@ -355,8 +442,37 @@ public class GasStationMapFragment extends Fragment {
                     @Override
                     public boolean onClusterItemClick(GasStationMarker marker) {
                         station_name.setText(marker.getGasStation().getmTItle());
+                        distance.setText(marker.getGasStation().getmDistance()+"");
                         station_adress.setText(marker.getGasStation().getmAddress());
                         station_phone.setText(marker.getGasStation().getmPhone());
+//                        gas.setText(marker.getGasStation().getmTItle());
+//                        disel.setText(marker.getGasStation().getmAddress());
+//                        hgas.setText(marker.getGasStation().getmPhone());
+                        if (marker.getGasStation().isConvstore().equals("Y")) {
+                            conv_store.setVisibility(View.VISIBLE);
+                        } else {
+                            conv_store.setVisibility(View.GONE);
+                        }
+                        if (marker.getGasStation().isSelf().equals("Y")) {
+                            self.setVisibility(View.VISIBLE);
+                        } else {
+                            self.setVisibility(View.GONE);
+                        }
+                        if (marker.getGasStation().isDirect().equals("Y")) {
+                            direct.setVisibility(View.VISIBLE);
+                        } else {
+                            direct.setVisibility(View.GONE);
+                        }
+                        if (marker.getGasStation().isRepair().equals("Y")) {
+                            repair.setVisibility(View.VISIBLE);
+                        } else {
+                            repair.setVisibility(View.GONE);
+                        }
+                        if (marker.getGasStation().isWash().equals("Y")) {
+                            wash.setVisibility(View.VISIBLE);
+                        } else {
+                            wash.setVisibility(View.GONE);
+                        }
 
                         if(detail_view.getVisibility() == View.GONE) {
                             detail_view.setVisibility(View.VISIBLE);
@@ -492,5 +608,27 @@ public class GasStationMapFragment extends Fragment {
                 GasStationMapFragment.getCurrent_location(), 14.5f), 1000, null);
     }
 
+    @Override
+    public void onBack() {
 
+        if(detail_view.getVisibility() == View.VISIBLE){
+            detail_view.setVisibility(View.GONE);
+            detail_view.startAnimation(sale_down_anim);
+        } else {
+            if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            } else {
+                GasStationActivity activity = (GasStationActivity) getActivity();
+                activity.setOnKeyBackPressedListener(null);
+                activity.onBackPressed();
+            }
+        }
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((GasStationActivity) activity).setOnKeyBackPressedListener(this);
+    }
 }

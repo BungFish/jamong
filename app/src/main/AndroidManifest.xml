@@ -43,6 +43,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.GasStationActivity" />
         </activity>
+        <activity
+            android:name=".activities.GasStationListActivity"
+            android:label="@string/title_activity_gas_station_list"
+            android:parentActivityName=".activities.GasStationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GasStationActivity" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

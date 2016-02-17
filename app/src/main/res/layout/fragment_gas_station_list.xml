@@ -3,27 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:background="@color/icons">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/filter_distance"
-            android:id="@+id/filter_distance" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_price"
-            android:id="@+id/filter_price" />
-    </RadioGroup>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gas_station_list"
         android:layout_width="match_parent"

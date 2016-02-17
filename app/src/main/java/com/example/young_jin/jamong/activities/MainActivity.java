@@ -82,10 +82,10 @@ public class MainActivity extends ActionBarActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rippleBackground.startRippleAnimation();
+
             }
         });
-
+        rippleBackground.startRippleAnimation();
         to_gas_station_activity_button = (Button) findViewById(R.id.to_gas_station_activity_button);
         to_gas_station_activity_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -26,6 +26,7 @@
     <string name="proximity">내주변</string>
     <string name="search_setting">검색설정</string>
     <string name="title_activity_gas_station_detail">주유소 상세정보</string>
+    <string name="title_activity_gas_station_list">주유소 목록</string>
 
     <string-array name="distance">
         <item>1km</item>

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.young_jin.jamong.R;
+import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
 import com.example.young_jin.jamong.models.GasStation;
@@ -123,8 +124,8 @@ public class GasStationMapFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_gas_station_map, container, false);
         this.alist = MainActivity.alist;
 
-        sale_up_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_up);
-        sale_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_down);
+        sale_up_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+        sale_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
 
         detail_view = (LinearLayout) layout.findViewById(R.id.detail_view);
         station_name = (TextView) layout.findViewById(R.id.station_name);
@@ -166,7 +167,7 @@ public class GasStationMapFragment extends Fragment {
         current_location = new LatLng(location.getLatitude(), location.getLongitude());
 
         map.getUiSettings().setMapToolbarEnabled(false);
-        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(false);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 current_location, 14.5f));
 
@@ -174,8 +175,8 @@ public class GasStationMapFragment extends Fragment {
                 strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
 
         map.addMarker(new MarkerOptions()
-                .title("현재위치")
-                .snippet("현재위치입니다.")
+//                .title("현재위치")
+//                .snippet("현재위치입니다.")
                 .position(current_location));
 
 //        new CurrentLocationTask().execute(location);
@@ -320,7 +321,7 @@ public class GasStationMapFragment extends Fragment {
                                 .findViewById(R.id.textView2);
 
                         tv1.setText(marker.getTitle());
-                        tv2.setText(String.format("%.1fkm",alist.get(Integer.valueOf(marker.getSnippet())).getmDistance()/1000));
+                        tv2.setText(String.format("%.1fkm", alist.get(Integer.valueOf(marker.getSnippet())).getmDistance() / 1000));
 
                         return v;
                     }
@@ -490,4 +491,6 @@ public class GasStationMapFragment extends Fragment {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 GasStationMapFragment.getCurrent_location(), 14.5f), 1000, null);
     }
+
+
 }

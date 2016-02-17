@@ -58,46 +58,46 @@
             android:id="@+id/textView3" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="편의점"
-            android:id="@+id/button7"
-            android:layout_weight="1" />
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="편의점"-->
+            <!--android:id="@+id/button7"-->
+            <!--android:layout_weight="1" />-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="셀프"
-            android:id="@+id/button8"
-            android:layout_weight="1" />
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="셀프"-->
+            <!--android:id="@+id/button8"-->
+            <!--android:layout_weight="1" />-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="직영점"
-            android:id="@+id/button9"
-            android:layout_weight="1" />
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="직영점"-->
+            <!--android:id="@+id/button9"-->
+            <!--android:layout_weight="1" />-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="정비소"
-            android:id="@+id/button10"
-            android:layout_weight="1" />
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="정비소"-->
+            <!--android:id="@+id/button10"-->
+            <!--android:layout_weight="1" />-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="세차"
-            android:id="@+id/button11"
-            android:layout_weight="1" />
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="세차"-->
+            <!--android:id="@+id/button11"-->
+            <!--android:layout_weight="1" />-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:orientation="horizontal"

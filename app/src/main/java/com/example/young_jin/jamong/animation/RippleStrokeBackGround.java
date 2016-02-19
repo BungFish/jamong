@@ -10,7 +10,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
+
+import com.example.young_jin.jamong.R;
 
 import java.util.ArrayList;
 
@@ -75,15 +78,17 @@ public class RippleStrokeBackGround extends RelativeLayout{
         if(rippleType==DEFAULT_FILL_TYPE){
             rippleStrokeWidth=0;
             paint.setStyle(Paint.Style.FILL);
-        }else
+        } else {
             paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(rippleStrokeWidth);
+        }
         paint.setColor(rippleColor);
 
         rippleParams=new LayoutParams((int)(2*(rippleRadius+rippleStrokeWidth)),(int)(2*(rippleRadius+rippleStrokeWidth)));
         rippleParams.addRule(CENTER_IN_PARENT, TRUE);
 
         animatorSet = new AnimatorSet();
-        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorList=new ArrayList<Animator>();
 
         for(int i=0;i<rippleAmount;i++){

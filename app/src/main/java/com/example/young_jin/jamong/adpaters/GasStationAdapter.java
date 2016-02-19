@@ -33,9 +33,23 @@ public class GasStationAdapter extends RecyclerView.Adapter<GasStationAdapter.My
         if(data != null){
             this.data = data;
         } else {
-            this.data = GasLab.get(activity).getmGasStation();
+            this.data = new ArrayList<GasStation>();
         }
         this.activity = activity;
+    }
+
+    public void clearData(){
+        this.data.clear();
+    }
+
+    public void setData(ArrayList<GasStation> data){
+        if(data != null){
+            this.data = data;
+        }
+    }
+
+    public void addData(GasStation gasStation){
+        this.data.add(gasStation);
     }
 
     @Override

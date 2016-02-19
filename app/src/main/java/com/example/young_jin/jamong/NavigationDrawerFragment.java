@@ -1,11 +1,11 @@
 package com.example.young_jin.jamong;
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
+import com.example.young_jin.jamong.fragments.GasStationMapFragment;
+import com.example.young_jin.jamong.fragments.MainFragment;
+import com.example.young_jin.jamong.fragments.SearchSettingFragment;
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,17 +188,23 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
     public void itemClick(View view, int position) {
             switch (position) {
                 case 0:
-                    if(MainActivity.alist==null){
-                        Toast.makeText(getActivity(), "데이터가 없습니다", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Intent intent = new Intent(getActivity(), GasStationActivity.class);
+//                    if(MainActivity.alist==null){
+//                        Toast.makeText(getActivity(), "데이터가 없습니다", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Intent intent = new Intent(getActivity(), GasStationActivity.class);
+//
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                        startActivity(intent);
+//
+//                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+//                    }
+                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_context, MainFragment.newInstance()).commit();
+                    mDrawerLayout.closeDrawer(containerView);
 
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-
-                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
-                    }
-
+                    break;
+                case 1:
+//                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_context, GasStationMapFragment.newInstance()).commit();
+//                    mDrawerLayout.closeDrawer(containerView);
                     break;
                 default:
                     Toast.makeText(getActivity(), "개발중인 메뉴입니다 조금만 기다려주세요!", Toast.LENGTH_SHORT).show();

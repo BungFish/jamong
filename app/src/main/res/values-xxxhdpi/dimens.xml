@@ -38,4 +38,7 @@
     <dimen name="layout_width">280dp</dimen>
     <dimen name="myham_width">350dp</dimen>
 
+    <dimen name="text_size_main">16dp</dimen>
+    <dimen name="text_size_radius_button">14dp</dimen>
+    <dimen name="text_size_main_button">16dp</dimen>
 </resources>

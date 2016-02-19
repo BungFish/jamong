@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#A02B35</color>
     <color name="colorAccent">#FF4081</color>
     <color name="icons">#FFFFFF</color>
-    <color name="colorMapRadius">#553F51B5</color>
+
+    <color name="colorMapRadius">#353F51B5</color>
+    <color name="colorMapStroke">#353F51B5</color>
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#616161</color>
@@ -39,4 +41,6 @@
         <item>@color/blue_dark</item>
         <item>@color/blue_darkest</item>
     </array>
+
+    <color name="rippelColor">#0099CC</color>
 </resources>

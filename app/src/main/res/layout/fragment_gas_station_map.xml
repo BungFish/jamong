@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="85dp"
-            android:layout_height="30dp"
-            android:text="반경: 3km"
-            android:textColor="@color/icons"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="12dp"
-            android:background="@color/secondary_text"
-            android:id="@+id/radius"
-            android:textAllCaps="false"/>
-
     <!--<Button-->
         <!--android:layout_width="85dp"-->
         <!--android:layout_height="30dp"-->
@@ -59,10 +47,11 @@
         </fragment>
 
         <LinearLayout
+            android:id="@+id/settings_layout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:gravity="center|bottom"
             android:background="@color/icons">
 
@@ -75,6 +64,7 @@
                     android:layout_width="0dp"
                     android:layout_height="?actionBarSize"
                     android:text="@string/search_address"
+                    android:textSize="@dimen/text_size_main"
                     android:id="@+id/button"
                     android:layout_weight="1"
                     style="@style/Widget.AppCompat.Button.Colored" />
@@ -83,6 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="?actionBarSize"
                     android:text="@string/proximity"
+                    android:textSize="@dimen/text_size_main"
                     android:id="@+id/button2"
                     android:layout_weight="1"
                     style="@style/Widget.AppCompat.Button.Colored"/>
@@ -91,12 +82,26 @@
                     android:layout_width="0dp"
                     android:layout_height="?actionBarSize"
                     android:text="@string/search_setting"
+                    android:textSize="@dimen/text_size_main"
                     android:id="@+id/button3"
                     android:layout_weight="1"
                     style="@style/Widget.AppCompat.Button.Colored"/>
             </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:layout_below="@+id/settings_layout"
+            android:layout_width="85dp"
+            android:layout_height="30dp"
+            android:text="반경: 3km"
+            android:textSize="@dimen/text_size_radius_button"
+            android:textColor="@color/icons"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="12dp"
+            android:background="@color/secondary_text"
+            android:id="@+id/radius"
+            android:textAllCaps="false"/>
 
         <View
             android:id="@+id/coverLyaout"
@@ -107,7 +112,26 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="match_parent"
+            android:id="@+id/station_list_view"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:background="@color/icons"
+            android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/gas_station_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/detail_view"
             android:layout_alignParentBottom="true"
             android:clickable="true"
@@ -148,7 +172,7 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="길안내"
+                        android:text="예약하기"
                         android:layout_alignParentRight="true"
                         android:id="@+id/detail_button"
                         style="@style/Widget.AppCompat.Button.Colored"/>

@@ -29,5 +29,4 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
-    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
 }

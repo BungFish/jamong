@@ -8,10 +8,12 @@ import com.google.maps.android.clustering.ClusterItem;
  */
 public class GasStationMarker implements ClusterItem {
 
+    private int index;
     private LatLng mPosition;
     private GasStation gasStation;
 
-    public GasStationMarker(LatLng mPosition, GasStation gasStation) {
+    public GasStationMarker(int index, LatLng mPosition, GasStation gasStation) {
+        this.index = index;
         this.mPosition = mPosition;
         this.gasStation = gasStation;
     }
@@ -19,6 +21,10 @@ public class GasStationMarker implements ClusterItem {
     @Override
     public LatLng getPosition() {
         return mPosition;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public GasStation getGasStation() {

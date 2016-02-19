@@ -24,6 +24,9 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 import com.example.young_jin.jamong.R;
 import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
+import com.example.young_jin.jamong.activities.GasStationListActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
 import com.example.young_jin.jamong.adpaters.GasStationAdapter;
 import com.example.young_jin.jamong.models.GasStation;
@@ -63,7 +67,7 @@ import java.util.List;
 /**
  * Created by Young-Jin on 2016-02-14.
  */
-public class GasStationMapFragment extends Fragment implements GasStationActivity.onKeyBackPressedListener, GasStationAdapter.ClickListener {
+public class GasStationMapFragment extends Fragment implements MainActivity.onKeyBackPressedListener, GasStationAdapter.ClickListener {
 
     private static final String DESCRIBABLE_KEY = "Jamong";
 
@@ -105,6 +109,9 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout station_list_view;
     private Animation slide_in_right_anim;
+    private Animation slide_down_from_top_anim;
+    private Animation slide_up_to_top_anim;
+    private LinearLayout settings_layout;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -150,8 +157,12 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         View layout = inflater.inflate(R.layout.fragment_gas_station_map, container, false);
         this.alist = MainActivity.alist;
 
+        setHasOptionsMenu(true);
+
         slide_up_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+        slide_up_to_top_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up_to_top);
         slide_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
+        slide_down_from_top_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
         slide_in_right_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
 
         detail_view = (LinearLayout) layout.findViewById(R.id.detail_view);
@@ -224,7 +235,7 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
                 current_location, 12.9f));
 
         mapCircle = map.addCircle(new CircleOptions().radius(3000).center(current_location).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                strokeColor(getResources().getColor(R.color.colorMapStroke)).strokeWidth(10f));
 
         map.addMarker(new MarkerOptions()
 //                .title("현재위치")
@@ -409,6 +420,9 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
                 }
             }
         });
+
+        settings_layout = (LinearLayout) layout.findViewById(R.id.settings_layout);
+        settings_layout.startAnimation(slide_down_from_top_anim);
 
         return layout;
 
@@ -668,9 +682,12 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
                 sub_layout.setVisibility(View.GONE);
                 sub_layout.startAnimation(slide_down_anim);
             } else {
-                GasStationActivity activity = (GasStationActivity) getActivity();
-                activity.setOnKeyBackPressedListener(null);
-                activity.onBackPressed();
+//                GasStationActivity activity = (GasStationActivity) getActivity();
+//                activity.setOnKeyBackPressedListener(null);
+//                activity.onBackPressed();
+
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_context, MainFragment.newInstance()).commit();
+
             }
         }
 
@@ -679,7 +696,7 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((GasStationActivity) activity).setOnKeyBackPressedListener(this);
+        ((MainActivity) activity).setOnKeyBackPressedListener(this);
     }
     
     public void populateDetailView(GasStation gasStation){
@@ -716,5 +733,32 @@ public class GasStationMapFragment extends Fragment implements GasStationActivit
         } else {
             wash.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_gas_station, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.view_station_list) {
+            Intent intent = new Intent(getActivity(), GasStationListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            startActivity(intent);
+
+            getActivity().overridePendingTransition(R.anim.slide_up, R.anim.hold);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

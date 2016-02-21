@@ -78,72 +78,38 @@ public class GasStation implements Parcelable {
         return mTItle;
     }
 
-    public void setmTItle(String mTItle) {
-        this.mTItle = mTItle;
-    }
 
     public String getmAddress() {
         return mAddress;
-    }
-
-    public void setmAddress(String mAddress) {
-        this.mAddress = mAddress;
     }
 
     public double getmDistance() {
         return mDistance;
     }
 
-    public void setmDistance(int mDistance) {
-        this.mDistance = mDistance;
-    }
-
     public String getmPhone() {
         return mPhone;
     }
 
-    public void setmPhone(String mPhone) {
-        this.mPhone = mPhone;
-    }
 
     public String isWash() {
         return isWash;
-    }
-
-    public void setIsWash(String isWash) {
-        this.isWash = isWash;
     }
 
     public String isConvstore() {
         return isConvstore;
     }
 
-    public void setIsConvstore(String isConvstore) {
-        this.isConvstore = isConvstore;
-    }
-
     public String isSelf() {
         return isSelf;
-    }
-
-    public void setIsSelf(String isSelf) {
-        this.isSelf = isSelf;
     }
 
     public String isDirect() {
         return isDirect;
     }
 
-    public void setIsDirect(String isDirect) {
-        this.isDirect = isDirect;
-    }
-
     public String isRepair() {
         return isRepair;
-    }
-
-    public void setIsRepair(String isRepair) {
-        this.isRepair = isRepair;
     }
 
     public int getIndex() {
@@ -154,16 +120,8 @@ public class GasStation implements Parcelable {
         return mLatitude;
     }
 
-    public void setmLatitude(double mLatitude) {
-        this.mLatitude = mLatitude;
-    }
-
     public double getmLongitude() {
         return mLongitude;
-    }
-
-    public void setmLongitude(double mLongitude) {
-        this.mLongitude = mLongitude;
     }
 
     @Override

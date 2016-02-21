@@ -7,10 +7,10 @@
         android:drawable="@color/icons" />
 
     <item android:state_focused="true" android:state_pressed="true"
-        android:drawable="@color/colorPrimary" />
+        android:drawable="@color/selected_list_background_color" />
 
     <item android:state_focused="false" android:state_pressed="true"
-        android:drawable="@color/colorPrimary" />
+        android:drawable="@color/selected_list_background_color" />
 
     <item android:drawable="@color/icons" />
 

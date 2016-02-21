@@ -67,31 +67,58 @@ public class GasStationAdapter extends RecyclerView.Adapter<GasStationAdapter.My
         holder.distance.setText(String.format("%.1fkm", current.getmDistance() / 1000));
 
         holder.adress.setText(current.getmAddress());
+
         if (current.isConvstore().equals("Y")) {
-            holder.conv_store.setVisibility(View.VISIBLE);
+            holder.conv_store.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            holder.conv_store.setVisibility(View.GONE);
+            holder.conv_store.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (current.isSelf().equals("Y")) {
-            holder.self.setVisibility(View.VISIBLE);
+            holder.self.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            holder.self.setVisibility(View.GONE);
+            holder.self.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (current.isDirect().equals("Y")) {
-            holder.direct.setVisibility(View.VISIBLE);
+            holder.direct.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            holder.direct.setVisibility(View.GONE);
+            holder.direct.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (current.isRepair().equals("Y")) {
-            holder.repair.setVisibility(View.VISIBLE);
+            holder.repair.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            holder.repair.setVisibility(View.GONE);
+            holder.repair.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (current.isWash().equals("Y")) {
-            holder.wash.setVisibility(View.VISIBLE);
+            holder.wash.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            holder.wash.setVisibility(View.GONE);
+            holder.wash.setBackgroundResource(R.drawable.rectangle_border);
         }
+
+//        if (current.isConvstore().equals("Y")) {
+//            holder.conv_store.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.conv_store.setVisibility(View.GONE);
+//        }
+//        if (current.isSelf().equals("Y")) {
+//            holder.self.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.self.setVisibility(View.GONE);
+//        }
+//        if (current.isDirect().equals("Y")) {
+//            holder.direct.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.direct.setVisibility(View.GONE);
+//        }
+//        if (current.isRepair().equals("Y")) {
+//            holder.repair.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.repair.setVisibility(View.GONE);
+//        }
+//        if (current.isWash().equals("Y")) {
+//            holder.wash.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.wash.setVisibility(View.GONE);
+//        }
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

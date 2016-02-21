@@ -47,6 +47,29 @@
         </fragment>
 
         <LinearLayout
+            android:layout_below="@+id/settings_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="85dp"
+                android:layout_height="30dp"
+                android:text="반경: 3km"
+                android:textSize="@dimen/text_size_radius_button"
+                android:textColor="@color/icons"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="12dp"
+                android:background="@color/secondary_text"
+                android:id="@+id/radius"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/coverLyaout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
+
+        <LinearLayout
             android:id="@+id/settings_layout"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -67,6 +90,7 @@
                     android:textSize="@dimen/text_size_main"
                     android:id="@+id/button"
                     android:layout_weight="1"
+                    android:background="@drawable/tab_indicator_background"
                     style="@style/Widget.AppCompat.Button.Colored" />
 
                 <Button
@@ -76,6 +100,7 @@
                     android:textSize="@dimen/text_size_main"
                     android:id="@+id/button2"
                     android:layout_weight="1"
+                    android:background="@drawable/tab_indicator_background"
                     style="@style/Widget.AppCompat.Button.Colored"/>
 
                 <Button
@@ -85,29 +110,31 @@
                     android:textSize="@dimen/text_size_main"
                     android:id="@+id/button3"
                     android:layout_weight="1"
+                    android:background="@drawable/tab_indicator_background"
                     style="@style/Widget.AppCompat.Button.Colored"/>
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:layout_below="@+id/settings_layout"
-            android:layout_width="85dp"
-            android:layout_height="30dp"
-            android:text="반경: 3km"
-            android:textSize="@dimen/text_size_radius_button"
-            android:textColor="@color/icons"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="12dp"
-            android:background="@color/secondary_text"
-            android:id="@+id/radius"
-            android:textAllCaps="false"/>
-
-        <View
-            android:id="@+id/coverLyaout"
+        <LinearLayout
+            android:layout_below="@id/settings_layout"
+            android:id="@+id/sub_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <!--<include-->
+            <!--android:id="@+id/app_bar2"-->
+            <!--layout="@layout/app_bar" />-->
+
+            <FrameLayout
+                android:id="@+id/sub_context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -119,19 +146,19 @@
             android:background="@color/icons"
             android:visibility="gone">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/gas_station_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gas_station_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                />
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/detail_view"
             android:layout_alignParentBottom="true"
             android:clickable="true"
@@ -141,13 +168,13 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp">
+                android:layout_height="match_parent">
 
                 <RelativeLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -162,17 +189,36 @@
                             android:textStyle="bold"
                             android:id="@+id/station_name" />
 
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="약8분"
+                            android:textColor="@color/sub_text"
+                            android:id="@+id/time" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / "
+                            android:textColor="@color/sub_text" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
+                            android:textColor="@color/sub_text"
                             android:id="@+id/distance" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="예약하기"
+                        android:text="길안내"
                         android:layout_alignParentRight="true"
                         android:id="@+id/detail_button"
                         style="@style/Widget.AppCompat.Button.Colored"/>
@@ -180,10 +226,17 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:background="@color/second_background">
+
+                <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:padding="15dp"
                     android:gravity="center">
 
                     <LinearLayout
@@ -203,9 +256,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1890"
-                            android:textSize="16dp"
+                            android:text="1890원"
+                            android:textSize="20dp"
                             android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
                             android:id="@+id/gas" />
                     </LinearLayout>
 
@@ -214,7 +268,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:background="@drawable/border_left">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -226,9 +281,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             android:textStyle="bold"
-                            android:text="1910"
+                            android:text="1910원"
                             android:id="@+id/disel" />
                     </LinearLayout>
 
@@ -237,7 +292,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:background="@drawable/border_left">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -249,132 +305,106 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             android:textStyle="bold"
                             android:text="2090원"
                             android:id="@+id/hgas" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Large Text"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:id="@+id/station_adress" />
+                        android:layout_marginLeft="12dp">
 
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="길찾기"-->
-                        <!--android:textColor="@color/icons"-->
-                        <!--android:background="@drawable/rectangle_border"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:id="@+id/textView10" />-->
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Large Text"
+                            android:textSize="14dp"
+                            android:id="@+id/station_adress" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="02-2267-8025"
-                        android:id="@+id/station_phone" />
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="02-2267-8025"
+                            android:textSize="14dp"
+                            android:textColor="@color/sub_text"
+                            android:id="@+id/station_phone" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:background="@color/third_background">
 
                     <TextView
                         android:id="@+id/conv_store"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/icons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/primary_text"
                         android:text="편의점"
                         android:textSize="12dp"
-                        android:background="@drawable/rectangle_border"
-                        android:visibility="gone"
-                        android:layout_marginRight="3dp"/>
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/self"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/icons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/primary_text"
                         android:text="셀프"
                         android:textSize="12dp"
-                        android:background="@drawable/rectangle_border"
-                        android:visibility="gone"
-                        android:layout_marginRight="3dp"/>
+                        android:gravity="center"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/direct"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/icons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/primary_text"
                         android:text="직영점"
                         android:textSize="12dp"
-                        android:background="@drawable/rectangle_border"
-                        android:visibility="gone"
-                        android:layout_marginRight="3dp"/>
+                        android:gravity="center"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/repair"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/icons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/primary_text"
                         android:text="정비소"
                         android:textSize="12dp"
-                        android:background="@drawable/rectangle_border"
-                        android:visibility="gone"
-                        android:layout_marginRight="3dp"/>
+                        android:gravity="center"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/wash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/icons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/primary_text"
                         android:text="세차"
                         android:textSize="12dp"
-                        android:background="@drawable/rectangle_border"
-                        android:visibility="gone"
-                        android:layout_marginRight="3dp"/>
+                        android:gravity="center"
+                        android:layout_weight="1" />
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sub_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:visibility="gone">
-
-            <include
-                android:id="@+id/app_bar2"
-                layout="@layout/app_bar" />
-
-            <FrameLayout
-                android:id="@+id/sub_context"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
 
     </RelativeLayout>
 

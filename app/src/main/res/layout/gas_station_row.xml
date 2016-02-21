@@ -5,21 +5,26 @@
     android:background="@drawable/list_background">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
         <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/list_text_color"
+                android:textColor="@color/primary_text"
                 android:textStyle="bold"
                 android:text="Dummy Text"
                 android:layout_marginRight="5dp"/>
@@ -27,9 +32,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:text="10km"
-                android:textSize="10dp"
+                android:textSize="12dp"
                 android:id="@+id/distance" />
+
         </LinearLayout>
 
         <TextView
@@ -41,7 +48,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <TextView
@@ -52,7 +59,6 @@
                 android:text="편의점"
                 android:textSize="12dp"
                 android:background="@drawable/rectangle_border"
-                android:visibility="gone"
                 android:layout_marginRight="3dp"/>
 
             <TextView
@@ -63,7 +69,6 @@
                 android:text="셀프"
                 android:textSize="12dp"
                 android:background="@drawable/rectangle_border"
-                android:visibility="gone"
                 android:layout_marginRight="3dp"/>
 
             <TextView
@@ -74,7 +79,6 @@
                 android:text="직영점"
                 android:textSize="12dp"
                 android:background="@drawable/rectangle_border"
-                android:visibility="gone"
                 android:layout_marginRight="3dp"/>
 
             <TextView
@@ -85,7 +89,6 @@
                 android:text="정비소"
                 android:textSize="12dp"
                 android:background="@drawable/rectangle_border"
-                android:visibility="gone"
                 android:layout_marginRight="3dp"/>
 
             <TextView
@@ -96,8 +99,23 @@
                 android:text="세차"
                 android:textSize="12dp"
                 android:background="@drawable/rectangle_border"
-                android:visibility="gone"
                 android:layout_marginRight="3dp"/>
+        </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="예약하기"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:textSize="16dp"
+                android:background="@color/colorPrimary" />
         </LinearLayout>
 
     </LinearLayout>

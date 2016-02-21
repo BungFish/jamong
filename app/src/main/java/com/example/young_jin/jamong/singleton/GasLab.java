@@ -21,7 +21,7 @@ public class GasLab {
         mGasStation = new ArrayList<GasStation>();
         for (int i = 0; i < 15; i++) {
             GasStation c = new GasStation();
-            c.setmTItle("주유소 #" + i);
+//            c.setmTItle("주유소 #" + i);
             mGasStation.add(c);
         }
     }

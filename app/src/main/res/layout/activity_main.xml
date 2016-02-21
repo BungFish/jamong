@@ -41,6 +41,15 @@
             android:layout_gravity="start"
             app:layout="@layout/fragment_navigation_drawer"
             tools:layout="@layout/fragment_navigation_drawer" />
+
+        <fragment
+            android:id="@+id/fragment_navigation_drawer2"
+            android:name="com.example.young_jin.jamong.DrawerFromRightFragment"
+            android:layout_width="@dimen/nav_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:layout="@layout/fragment_drawer_from_right"
+            tools:layout="@layout/fragment_drawer_from_right" />
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.young_jin.jamong.DrawerFromRightFragment;
 import com.example.young_jin.jamong.NavigationDrawerFragment;
 import com.example.young_jin.jamong.R;
 import com.example.young_jin.jamong.animation.RippleStrokeBackGround;
@@ -61,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout buttons;
     private Location my_location;
     private Button quick;
+    public static NavigationDrawerFragment drawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
         toolbar_title.setText(getSupportActionBar().getTitle());
         getSupportActionBar().setTitle("");
 
-        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_context, MainFragment.newInstance()).commit();
@@ -110,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //                    startActivity(intent);
 //
-//                    overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+//                    overridePendingTransition(R.anim.slide_in_from_right, R.anim.hold);
 //                }
 //            }
 //        });
@@ -200,7 +203,7 @@ public class MainActivity extends ActionBarActivity {
             stationList = arr_shop.getJSONArray("nc_list");
             int leng = stationList.length();
 
-            Log.i("==============", stationList.toString());
+//            Log.i("==============", stationList.toString());
 
             for (int i = 0; i < leng; i++) {
                 JSONObject station = stationList.getJSONObject(i);

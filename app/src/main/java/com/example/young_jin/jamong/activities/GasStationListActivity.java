@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.young_jin.jamong.R;
@@ -17,6 +19,10 @@ import com.example.young_jin.jamong.fragments.GasStationListFragment;
  * Created by slogup on 2016. 2. 17..
  */
 public class GasStationListActivity extends ActionBarActivity {
+
+    private Button filter_distance;
+    private Button filter_price;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,6 +35,31 @@ public class GasStationListActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("");
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_gas_station_list, GasStationListFragment.newInstance());
+
+        filter_distance = (Button) toolbar.findViewById(R.id.filter_distance);
+        filter_price = (Button) toolbar.findViewById(R.id.filter_price);
+
+        filter_distance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filter_distance.setBackgroundColor(getResources().getColor(R.color.icons));
+                filter_distance.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                filter_price.setBackgroundColor(getResources().getColor(R.color.colorPrimary));;
+                filter_price.setTextColor(getResources().getColor(R.color.icons));
+            }
+        });
+
+        filter_price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filter_distance.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                filter_distance.setTextColor(getResources().getColor(R.color.icons));
+
+                filter_price.setBackgroundColor(getResources().getColor(R.color.icons));
+                filter_price.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+        });
 
     }
 
@@ -58,6 +89,6 @@ public class GasStationListActivity extends ActionBarActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.hold, R.anim.slide_down);
+        overridePendingTransition(R.anim.hold_short, R.anim.slide_down);
     }
 }

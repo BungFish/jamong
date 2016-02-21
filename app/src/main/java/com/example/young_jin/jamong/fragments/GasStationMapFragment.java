@@ -20,9 +20,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.young_jin.jamong.R;
-import com.example.young_jin.jamong.activities.GasStationActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
 import com.example.young_jin.jamong.activities.GasStationListActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
@@ -63,11 +62,12 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Young-Jin on 2016-02-14.
  */
-public class GasStationMapFragment extends Fragment implements MainActivity.onKeyBackPressedListener, GasStationAdapter.ClickListener {
+public class GasStationMapFragment extends Fragment implements MainActivity.onKeyBackPressedListener, GasStationAdapter.ClickListener, AdressSearchFragment.ClickListener, SearchSettingFragment.ClickListener {
 
     private static final String DESCRIBABLE_KEY = "Jamong";
 
@@ -89,8 +89,6 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     private RelativeLayout map_layout;
     private GasStationAdapter.ClickListener clickListener;
     private FragmentManager fragmentManager;
-    private Toolbar toolbar2;
-    private TextView toolbar_title2;
     private TextView gas;
     private TextView disel;
     private TextView hgas;
@@ -112,6 +110,16 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     private Animation slide_down_from_top_anim;
     private Animation slide_up_to_top_anim;
     private LinearLayout settings_layout;
+    private Animation slide_out_to_right_anim;
+    private Animation slide_in_left_anim;
+    private Animation slide_out_to_left_anim;
+    private View highlighted_custom_marker;
+    private MyClusterRenderer myClusterRenderer;
+    private Marker selectedMarker;
+    private GasStationMarker selectedClusterItem;
+    private int radius;
+    private Button button;
+    private Button button3;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -163,7 +171,12 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         slide_up_to_top_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up_to_top);
         slide_down_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
         slide_down_from_top_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
-        slide_in_right_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+        slide_in_right_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_from_right);
+        slide_out_to_right_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_to_right);
+
+        slide_in_left_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_from_left);
+        slide_out_to_left_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_to_left);
+
 
         detail_view = (LinearLayout) layout.findViewById(R.id.detail_view);
         station_name = (TextView) layout.findViewById(R.id.station_name);
@@ -172,8 +185,8 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         station_phone = (TextView) layout.findViewById(R.id.station_phone);
         gas = (TextView) layout.findViewById(R.id.gas);
         disel = (TextView) layout.findViewById(R.id.disel);
-
         hgas = (TextView) layout.findViewById(R.id.hgas);
+
         conv_store = (TextView) layout.findViewById(R.id.conv_store);
         self = (TextView) layout.findViewById(R.id.self);
         direct = (TextView) layout.findViewById(R.id.direct);
@@ -206,6 +219,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
 
         custom_marker = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+        highlighted_custom_marker = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.highlighted_custom_marker, null);
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
@@ -229,24 +243,28 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
         current_location = new LatLng(location.getLatitude(), location.getLongitude());
 
+        map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 current_location, 12.9f));
 
-        mapCircle = map.addCircle(new CircleOptions().radius(3000).center(current_location).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                strokeColor(getResources().getColor(R.color.colorMapStroke)).strokeWidth(10f));
+        addMapCircle(3000, current_location);
 
-        map.addMarker(new MarkerOptions()
-//                .title("현재위치")
-//                .snippet("현재위치입니다.")
-                .position(current_location));
+//        map.addMarker(new MarkerOptions()
+////                .title("현재위치")
+////                .snippet("현재위치입니다.")
+//                .position(current_location));
 
 //        new CurrentLocationTask().execute(location);
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+
+                button.setSelected(false);
+                button3.setSelected(false);
+
                 if (detail_view.getVisibility() == View.VISIBLE) {
                     detail_view.setVisibility(View.GONE);
                     detail_view.startAnimation(slide_down_anim);
@@ -256,6 +274,23 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                     station_list_view.setVisibility(View.GONE);
                     station_list_view.startAnimation(slide_down_anim);
                 }
+
+                if (sub_layout.getVisibility() == View.VISIBLE) {
+                    sub_layout.setVisibility(View.GONE);
+                    sub_layout.startAnimation(slide_up_to_top_anim);
+                }
+
+//                if (selectedClusterItem != null) {
+//                    selectedClusterItem.setIsSelected(false);
+//
+//                    selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+//                    if(selectedMarker != null) {
+//                        selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+//                    }
+//
+//                    selectedClusterItem = null;
+//                }
+                setMarkerUnselected();
             }
         });
 
@@ -270,81 +305,72 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                             public void onClick(DialogInterface dialog, int which) {
                                 mClusterManager.clearItems();
                                 mapCircle.remove();
-
                                 switch (which) {
                                     case 0:
+                                        radius = 1000;
                                         for (int i = 0; i < alist.size(); i++) {
-                                            if (alist.get(i).getmDistance()/1000 <= 1) {
-                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                                            if (alist.get(i).getmDistance() <= radius) {
+                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                                             }
                                         }
-                                        mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
-                                                mClusterManager));
 
-                                        mapCircle = map.addCircle(new CircleOptions().radius(1000).center(GasStationMapFragment.getCurrent_location()).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                                                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                                        addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                                 current_location, 14.5f), 1000, null);
                                         radiusButton.setText("반경: 1km");
                                         break;
                                     case 1:
+                                        radius = 3000;
                                         for (int i = 0; i < alist.size(); i++) {
-                                            if (alist.get(i).getmDistance()/1000 <= 3) {
-                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                                            if (alist.get(i).getmDistance() <= radius) {
+                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                                             }
                                         }
-                                        mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
-                                                mClusterManager));
 
-                                        mapCircle = map.addCircle(new CircleOptions().radius(3000).center(GasStationMapFragment.getCurrent_location()).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                                                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                                        addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.9f), 1000, null);
                                         radiusButton.setText("반경: 3km");
 
                                         break;
                                     case 2:
+                                        radius = 5000;
                                         for (int i = 0; i < alist.size(); i++) {
-                                            if (alist.get(i).getmDistance()/1000 <= 5) {
-                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                                            if (alist.get(i).getmDistance() <= radius) {
+                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                                             }
                                         }
-                                        mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
-                                                mClusterManager));
 
-                                        mapCircle = map.addCircle(new CircleOptions().radius(5000).center(GasStationMapFragment.getCurrent_location()).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                                                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                                        addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.1f), 1000, null);
                                         radiusButton.setText("반경: 5km");
                                         break;
                                     case 3:
+                                        radius = 10000;
                                         for (int i = 0; i < alist.size(); i++) {
-                                            if (alist.get(i).getmDistance()/1000 <= 10) {
-                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                                            if (alist.get(i).getmDistance() <= radius) {
+                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                                             }
                                         }
-                                        mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
-                                                mClusterManager));
 
-                                        mapCircle = map.addCircle(new CircleOptions().radius(10000).center(GasStationMapFragment.getCurrent_location()).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                                                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                                        addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 11.2f), 1000, null);
                                         radiusButton.setText("반경: 10km");
                                         break;
                                     case 4:
+                                        radius = 20000;
                                         for (int i = 0; i < alist.size(); i++) {
-                                            if (alist.get(i).getmDistance()/1000 <= 20) {
-                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                                            if (alist.get(i).getmDistance() <= radius) {
+                                                mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                                             }
                                         }
-                                        mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map,
-                                                mClusterManager));
 
-                                        mapCircle = map.addCircle(new CircleOptions().radius(20000).center(GasStationMapFragment.getCurrent_location()).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                                                strokeColor(getResources().getColor(R.color.colorPrimary)).strokeWidth(1f));
+                                        addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 10.2f), 1000, null);
                                         radiusButton.setText("반경: 20km");
                                         break;
                                 }
+
+                                mClusterManager.cluster();
 
                                 dialog.cancel();
                             }
@@ -352,43 +378,45 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
-
-        toolbar2 = (Toolbar) layout.findViewById(R.id.app_bar2);
-        toolbar_title2 = (TextView) toolbar2.findViewById(R.id.toolbar_title);
-
         sub_layout = (LinearLayout) layout.findViewById(R.id.sub_layout);
 
         fragmentManager = getChildFragmentManager();
 
-        View cover = layout.findViewById(R.id.coverLyaout);
-        cover.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (sub_layout.getVisibility() == View.VISIBLE) {
-                    sub_layout.setVisibility(View.GONE);
-                    sub_layout.startAnimation(slide_down_anim);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        View cover = layout.findViewById(R.id.coverLyaout);
+//        cover.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                button.setSelected(false);
+//                button3.setSelected(false);
+//
+//                if (sub_layout.getVisibility() == View.VISIBLE) {
+//                    sub_layout.setVisibility(View.GONE);
+//                    sub_layout.startAnimation(slide_up_to_top_anim);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
-        Button button = (Button) layout.findViewById(R.id.button);
+        button = (Button) layout.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sub_layout.getVisibility() == View.GONE) {
-                    fragmentManager.beginTransaction().replace(R.id.sub_context, AdressSearchFragment.newInstance()).commit();
-                    toolbar_title2.setText("주소검색");
+                button.setSelected(true);
+                button3.setSelected(false);
 
-                    view_instance = sub_layout;
-                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
-                    params.height = (int) (heightOfScreen * 0.7);
-                    view_instance.setLayoutParams(params);
+                if (!AdressSearchFragment.newInstance().isAdded()) {
+                    fragmentManager.beginTransaction().replace(R.id.sub_context, AdressSearchFragment.newInstance()).commit();
+                }
+                if (sub_layout.getVisibility() == View.GONE) {
+
+//                    view_instance = sub_layout;
+//                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
+//                    params.height = (int) (heightOfScreen * 0.7);
+//                    view_instance.setLayoutParams(params);
 
                     sub_layout.setVisibility(View.VISIBLE);//0.8
-                    sub_layout.startAnimation(slide_up_anim);
-
+                    sub_layout.startAnimation(slide_in_left_anim);
 
                 }
             }
@@ -402,27 +430,34 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
-        Button button3 = (Button) layout.findViewById(R.id.button3);
+        button3 = (Button) layout.findViewById(R.id.button3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sub_layout.getVisibility() == View.GONE) {
-                    fragmentManager.beginTransaction().replace(R.id.sub_context, SearchSettingFragment.newInstance()).commit();
-                    toolbar_title2.setText("검색설정");
+                button.setSelected(false);
+                button3.setSelected(true);
 
-                    view_instance = sub_layout;
-                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
-                    params.height = (int) (heightOfScreen * 0.4);
-                    view_instance.setLayoutParams(params);
+                if (!SearchSettingFragment.newInstance().isAdded()) {
+                    fragmentManager.beginTransaction().replace(R.id.sub_context, SearchSettingFragment.newInstance()).commit();
+                }
+                if (sub_layout.getVisibility() == View.GONE) {
+
+//                    view_instance = sub_layout;
+//                    ViewGroup.LayoutParams params = view_instance.getLayoutParams();
+//                    params.height = (int) (heightOfScreen * 0.4);
+//                    view_instance.setLayoutParams(params);
 
                     sub_layout.setVisibility(View.VISIBLE);//0.45
-                    sub_layout.startAnimation(slide_up_anim);
+                    sub_layout.startAnimation(slide_in_right_anim);
                 }
             }
         });
 
         settings_layout = (LinearLayout) layout.findViewById(R.id.settings_layout);
         settings_layout.startAnimation(slide_down_from_top_anim);
+
+        AdressSearchFragment.newInstance().setClickListener(this);
+        SearchSettingFragment.newInstance().setClickListener(this);
 
         return layout;
 
@@ -440,6 +475,9 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         map.setOnMarkerClickListener(mClusterManager);
 
         map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+
+        myClusterRenderer = new MyClusterRenderer(getActivity(), map, mClusterManager);
+        mClusterManager.setRenderer(myClusterRenderer);
 
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new GoogleMap.InfoWindowAdapter() {
@@ -505,11 +543,31 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                 .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<GasStationMarker>() {
 
                     @Override
-                    public boolean onClusterItemClick(GasStationMarker marker) {
-                        
-                        populateDetailView(marker.getGasStation());
+                    public boolean onClusterItemClick(GasStationMarker clusterItem) {
 
-                        if(detail_view.getVisibility() == View.GONE) {
+//                        if (selectedClusterItem != null) {
+//                            selectedClusterItem.setIsSelected(false);
+//
+//                            selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+//                            if(selectedMarker != null) {
+//                                selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+//                            }
+//                        }
+//
+//                        selectedClusterItem = clusterItem;
+//
+//                        if (selectedClusterItem != null) {
+//                            selectedClusterItem.setIsSelected(true);
+//
+//                            selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+//                            selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), highlighted_custom_marker)));
+//                        }
+
+                        setMarkerSelected(clusterItem);
+
+                        populateDetailView(clusterItem.getGasStation());
+
+                        if (detail_view.getVisibility() == View.GONE) {
                             detail_view.setVisibility(View.VISIBLE);
                             detail_view.startAnimation(slide_up_anim);
                         }
@@ -535,28 +593,52 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                 startActivity(intent);
 
-                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+                getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left_half);
             }
         });
 
-        if(MainActivity.alist != null){
-
+        if(alist != null){
+            radius = 3000;
             for (int i = 0; i < alist.size(); i++) {
-                if (alist.get(i).getmDistance()/1000 <= 3) {
-                    mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i)));
+                if (alist.get(i).getmDistance() <= 3000) {
+                    mClusterManager.addItem(new GasStationMarker(i, new LatLng(alist.get(i).getmLatitude(), alist.get(i).getmLongitude()), alist.get(i), false));
                 }
             }
-
-            mClusterManager.setRenderer(new MyClusterRenderer(getActivity(), map, mClusterManager));
         } else {
             Toast.makeText(getActivity(), "데이터를 아직 받아오지 못했습니다.", Toast.LENGTH_LONG).show();
         }
 
     }
 
+    @Override
+    public void itemClick(int id) {
+        switch (id){
+            case R.id.cancel:
+                if (sub_layout.getVisibility() == View.VISIBLE) {
+                    sub_layout.setVisibility(View.GONE);
+                    sub_layout.startAnimation(slide_up_to_top_anim);
+
+                    button.setSelected(false);
+                    button3.setSelected(false);
+                }
+                break;
+            case R.id.confirm:
+                if (sub_layout.getVisibility() == View.VISIBLE) {
+                    sub_layout.setVisibility(View.GONE);
+                    sub_layout.startAnimation(slide_up_to_top_anim);
+
+                    button.setSelected(false);
+                    button3.setSelected(false);
+                }
+                break;
+        }
+
+
+    }
+
     class MyClusterRenderer extends DefaultClusterRenderer<GasStationMarker> {
 
-        private static final int MIN_CLUSTER_SIZE = 4;
+        private static final int MIN_CLUSTER_SIZE = 5;
 
         public MyClusterRenderer(Context context, GoogleMap map,
                                  ClusterManager<GasStationMarker> clusterManager) {
@@ -569,16 +651,27 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                                                    MarkerOptions markerOptions) {
             super.onBeforeClusterItemRendered(item, markerOptions);
 
+            if(item.getIsSelected()){
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), highlighted_custom_marker)));
+            } else {
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+            }
+
         }
 
         @Override
         protected void onClusterItemRendered(GasStationMarker clusterItem,
                                              Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
-
             marker.setTitle(clusterItem.getGasStation().getmTItle());
             marker.setSnippet(clusterItem.getGasStation().getIndex() + "");
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+
+//            if(clusterItem.getIsSelected()){
+//                marker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), highlighted_custom_marker)));
+//            } else {
+//                marker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+//            }
+
 //            TextView textView = (TextView) custom_marker.findViewById(R.id.gas_station_title);
 //            textView.setText(clusterItem.getGasStation().getmTItle());
 
@@ -588,6 +681,15 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         protected boolean shouldRenderAsCluster(Cluster<GasStationMarker> cluster) {
             // start clustering if at least 5 items overlap
             return cluster.getSize() > MIN_CLUSTER_SIZE;
+        }
+
+        @Override
+        public void onClustersChanged(Set<? extends Cluster<GasStationMarker>> clusters) {
+            super.onClustersChanged(clusters);
+
+            if(selectedMarker != null) {
+                selectedMarker = null;
+            }
         }
     }
 
@@ -662,9 +764,17 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             station_list_view.startAnimation(slide_down_anim);
         }
 
+//        if (selectedClusterItem != null) {
+//            selectedClusterItem.setIsSelected(false);
+//        }
+//
+//        selectedClusterItem = markerList.get(position);
+//        selectedClusterItem.setIsSelected(true);
+
+        setMarkerSelected(markerList.get(position));
+
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(adapter.getItem(position).getmLatitude(), adapter.getItem(position).getmLongitude()), 14.5f), 1000, null);
-
         
     }
 
@@ -674,13 +784,18 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         if(detail_view.getVisibility() == View.VISIBLE){
             detail_view.setVisibility(View.GONE);
             detail_view.startAnimation(slide_down_anim);
+
+            setMarkerUnselected();
         } else if(station_list_view.getVisibility() == View.VISIBLE) {
             station_list_view.setVisibility(View.GONE);
             station_list_view.startAnimation(slide_down_anim);
         } else {
             if (sub_layout.getVisibility() == View.VISIBLE) {
                 sub_layout.setVisibility(View.GONE);
-                sub_layout.startAnimation(slide_down_anim);
+                sub_layout.startAnimation(slide_up_to_top_anim);
+
+                button.setSelected(false);
+                button3.setSelected(false);
             } else {
 //                GasStationActivity activity = (GasStationActivity) getActivity();
 //                activity.setOnKeyBackPressedListener(null);
@@ -698,6 +813,42 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         super.onAttach(activity);
         ((MainActivity) activity).setOnKeyBackPressedListener(this);
     }
+
+    public void setMarkerSelected(GasStationMarker gasStationMarker){
+            if (selectedClusterItem != null) {
+                selectedClusterItem.setIsSelected(false);
+
+                selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+                if(selectedMarker != null) {
+                    selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+                }
+            }
+
+            selectedClusterItem = gasStationMarker;
+
+            if (selectedClusterItem != null) {
+                selectedClusterItem.setIsSelected(true);
+
+                selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+                if(selectedMarker != null) {
+                    selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), highlighted_custom_marker)));
+                }
+            }
+
+    }
+
+    public void setMarkerUnselected(){
+        if (selectedClusterItem != null) {
+            selectedClusterItem.setIsSelected(false);
+
+            selectedMarker = myClusterRenderer.getMarker(selectedClusterItem);
+            if(selectedMarker != null) {
+                selectedMarker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+            }
+
+            selectedClusterItem = null;
+        }
+    }
     
     public void populateDetailView(GasStation gasStation){
         station_name.setText(gasStation.getmTItle());
@@ -708,31 +859,65 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 //                        gas.setText(gasStation.getmTItle());
 //                        disel.setText(gasStation.getmAddress());
 //                        hgas.setText(gasStation.getmPhone());
+
+//        if (gasStation.isConvstore().equals("Y")) {
+//            conv_store.setBackgroundResource(R.drawable.primary_rectangle_border);
+//        } else {
+//            conv_store.setBackgroundResource(R.drawable.rectangle_border);
+//        }
+//        if (gasStation.isSelf().equals("Y")) {
+//            self.setBackgroundResource(R.drawable.primary_rectangle_border);
+//        } else {
+//            self.setBackgroundResource(R.drawable.rectangle_border);
+//        }
+//        if (gasStation.isDirect().equals("Y")) {
+//            direct.setBackgroundResource(R.drawable.primary_rectangle_border);
+//        } else {
+//            direct.setBackgroundResource(R.drawable.rectangle_border);
+//        }
+//        if (gasStation.isRepair().equals("Y")) {
+//            repair.setBackgroundResource(R.drawable.primary_rectangle_border);
+//        } else {
+//            repair.setBackgroundResource(R.drawable.rectangle_border);
+//        }
+//        if (gasStation.isWash().equals("Y")) {
+//            wash.setBackgroundResource(R.drawable.primary_rectangle_border);
+//        } else {
+//            wash.setBackgroundResource(R.drawable.rectangle_border);
+//        }
+
         if (gasStation.isConvstore().equals("Y")) {
-            conv_store.setVisibility(View.VISIBLE);
+            conv_store.setBackgroundResource(R.color.colorPrimary);
         } else {
-            conv_store.setVisibility(View.GONE);
+            conv_store.setBackgroundResource(R.color.third_background);
         }
         if (gasStation.isSelf().equals("Y")) {
-            self.setVisibility(View.VISIBLE);
+            self.setBackgroundResource(R.color.colorPrimary);
         } else {
-            self.setVisibility(View.GONE);
+            self.setBackgroundResource(R.color.third_background);
         }
         if (gasStation.isDirect().equals("Y")) {
-            direct.setVisibility(View.VISIBLE);
+            direct.setBackgroundResource(R.color.colorPrimary);
         } else {
-            direct.setVisibility(View.GONE);
+            direct.setBackgroundResource(R.color.third_background);
         }
         if (gasStation.isRepair().equals("Y")) {
-            repair.setVisibility(View.VISIBLE);
+            repair.setBackgroundResource(R.color.colorPrimary);
         } else {
-            repair.setVisibility(View.GONE);
+            repair.setBackgroundResource(R.color.third_background);
         }
         if (gasStation.isWash().equals("Y")) {
-            wash.setVisibility(View.VISIBLE);
+            wash.setBackgroundResource(R.color.colorPrimary);
         } else {
-            wash.setVisibility(View.GONE);
+            wash.setBackgroundResource(R.color.third_background);
         }
+
+
+    }
+
+    public void addMapCircle(int radius, LatLng current_location){
+        mapCircle = map.addCircle(new CircleOptions().radius(radius).center(current_location).fillColor(getResources().getColor(R.color.colorMapRadius)).
+                strokeColor(getResources().getColor(R.color.colorMapStroke)).strokeWidth(10f));
     }
 
     @Override
@@ -753,9 +938,17 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             Intent intent = new Intent(getActivity(), GasStationListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+            intent.putExtra("station", alist);
+            intent.putExtra("radius", radius);
+
             startActivity(intent);
 
-            getActivity().overridePendingTransition(R.anim.slide_up, R.anim.hold);
+            getActivity().overridePendingTransition(R.anim.slide_up_fast, R.anim.hold);
+            return true;
+        }
+
+        if (id == R.id.settings) {
+            MainActivity.drawerFragment.getmDrawerLayout().openDrawer(Gravity.RIGHT);
             return true;
         }
 

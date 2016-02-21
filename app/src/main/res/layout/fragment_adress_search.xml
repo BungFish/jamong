@@ -1,38 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/icons">
 
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="시 / 도"-->
+            <!--android:textColor="@color/icons"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:id="@+id/cities"-->
+            <!--android:layout_weight="1" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="시 / 군 / 구"-->
+            <!--android:textColor="@color/icons"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:id="@+id/districts"-->
+            <!--android:layout_weight="1" />-->
+    <!--</LinearLayout>-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/adress_search_context"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/confirm_layout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/city_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_weight="1" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/district_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_weight="1" />
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/confirm_layout">
         <Button
+            android:id="@+id/cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="시 / 도"
-            android:textColor="@color/icons"
-            android:background="@color/colorPrimary"
-            android:id="@+id/cities"
-            android:focusableInTouchMode="true"
+            android:text="취소"
             android:layout_weight="1" />
-
         <Button
+            android:id="@+id/confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="시 / 군 / 구"
-            android:textColor="@color/icons"
-            android:background="@color/colorPrimary"
-            android:id="@+id/districts"
-            android:focusableInTouchMode="true"
-            android:layout_weight="1" />
+            android:text="확인"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Colored"/>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/adress_search_context"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</LinearLayout>
+</RelativeLayout>

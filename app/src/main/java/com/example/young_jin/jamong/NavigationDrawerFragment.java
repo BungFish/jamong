@@ -97,7 +97,7 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
 //                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //                startActivity(intent);
 //
-//                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+//                getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.hold);
 //            }
 //        });
 
@@ -150,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
+                    super.onDrawerSlide(drawerView, 0);
 
 //                if (slideOffset < 0.3) {
 //                    toolbar.setAlpha(1 - slideOffset);
@@ -196,7 +196,7 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
 //                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //                        startActivity(intent);
 //
-//                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold);
+//                        getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.hold);
 //                    }
                     getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_context, MainFragment.newInstance()).commit();
                     mDrawerLayout.closeDrawer(containerView);
@@ -210,5 +210,9 @@ public class NavigationDrawerFragment extends Fragment implements RecyclerAdapte
                     Toast.makeText(getActivity(), "개발중인 메뉴입니다 조금만 기다려주세요!", Toast.LENGTH_SHORT).show();
                     break;
             }
+    }
+
+    public DrawerLayout getmDrawerLayout() {
+        return mDrawerLayout;
     }
 }

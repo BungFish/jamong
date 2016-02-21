@@ -39,10 +39,6 @@ public class DistrictsFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.fragment_districts, container, false);
 
-        for (GasStation gasStation : MainActivity.alist) {
-
-        }
-//        GasStationMapFragment.getGoogleMap().
         return layout;
     }
 

@@ -45,7 +45,7 @@ public class GasStationDetailActivityFragment extends Fragment {
         intent = getActivity().getIntent();
         gasStation = intent.getParcelableExtra("station");
 
-        Log.d("======================", gasStation.toString());
+//        Log.d("======================", gasStation.toString());
 
         title = (TextView) layout.findViewById(R.id.title);
         adress = (TextView) layout.findViewById(R.id.adress);
@@ -56,29 +56,29 @@ public class GasStationDetailActivityFragment extends Fragment {
         wash = (TextView) layout.findViewById(R.id.wash);
 
         if (gasStation.isConvstore().equals("Y")) {
-            conv_store.setVisibility(View.VISIBLE);
+            conv_store.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            conv_store.setVisibility(View.GONE);
+            conv_store.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (gasStation.isSelf().equals("Y")) {
-            self.setVisibility(View.VISIBLE);
+            self.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            self.setVisibility(View.GONE);
+            self.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (gasStation.isDirect().equals("Y")) {
-            direct.setVisibility(View.VISIBLE);
+            direct.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            direct.setVisibility(View.GONE);
+            direct.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (gasStation.isRepair().equals("Y")) {
-            repair.setVisibility(View.VISIBLE);
+            repair.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            repair.setVisibility(View.GONE);
+            repair.setBackgroundResource(R.drawable.rectangle_border);
         }
         if (gasStation.isWash().equals("Y")) {
-            wash.setVisibility(View.VISIBLE);
+            wash.setBackgroundResource(R.drawable.primary_rectangle_border);
         } else {
-            wash.setVisibility(View.GONE);
+            wash.setBackgroundResource(R.drawable.rectangle_border);
         }
 
 

@@ -23,7 +23,7 @@
     <string name="filter_price">가격순</string>
 
     <string name="search_address">주소검색</string>
-    <string name="proximity">내주변</string>
+    <string name="proximity">내위치</string>
     <string name="search_setting">검색설정</string>
     <string name="title_activity_gas_station_detail">주유소 상세정보</string>
     <string name="title_activity_gas_station_list">주유소 목록</string>
@@ -34,5 +34,58 @@
         <item>5km</item>
         <item>10km</item>
         <item>20km</item>
+    </string-array>
+
+    <string-array name="city">
+        <item>서울</item>
+        <item>경기</item>
+        <item>인천</item>
+        <item>강원</item>
+        <item>대전</item>
+        <item>세종</item>
+        <item>충남</item>
+        <item>충북</item>
+        <item>부산</item>
+        <item>울산</item>
+        <item>경남</item>
+        <item>경북</item>
+        <item>대구</item>
+    </string-array>
+
+    <string-array name="district">
+        <item>강남구</item>
+        <item>강동구</item>
+        <item>강북구</item>
+        <item>강서구</item>
+        <item>관악구</item>
+        <item>광진구</item>
+        <item>구로구</item>
+        <item>금천구</item>
+        <item>노원구</item>
+        <item>강남구</item>
+        <item>강동구</item>
+        <item>강북구</item>
+        <item>강서구</item>
+        <item>관악구</item>
+        <item>광진구</item>
+        <item>구로구</item>
+        <item>금천구</item>
+        <item>노원구</item>
+    </string-array>
+
+    <string-array name="district2">
+        <item>북구</item>
+        <item>동구</item>
+        <item>남구</item>
+        <item>서구</item>
+        <item>중구</item>
+    </string-array>
+
+    <string-array name="district3">
+        <item>북동구</item>
+        <item>남동구</item>
+        <item>서남구</item>
+        <item>북서구</item>
+        <item>중구</item>
     </string-array>
 </resources>

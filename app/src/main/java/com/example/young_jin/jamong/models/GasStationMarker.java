@@ -11,11 +11,13 @@ public class GasStationMarker implements ClusterItem {
     private int index;
     private LatLng mPosition;
     private GasStation gasStation;
+    private Boolean isSelected;
 
-    public GasStationMarker(int index, LatLng mPosition, GasStation gasStation) {
+    public GasStationMarker(int index, LatLng mPosition, GasStation gasStation, Boolean isSelected) {
         this.index = index;
         this.mPosition = mPosition;
         this.gasStation = gasStation;
+        this.isSelected = isSelected;
     }
 
     @Override
@@ -33,5 +35,13 @@ public class GasStationMarker implements ClusterItem {
 
     public void setGasStation(GasStation gasStation) {
         this.gasStation = gasStation;
+    }
+
+    public Boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }

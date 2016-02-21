@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/nav_drawer_width"
+    android:layout_height="match_parent"
+    android:background="@color/icons"
+    android:id="@+id/fragment_navigation_drawer"
+    android:orientation="vertical"
+    android:clickable="true"
+    tools:context="com.example.young_jin.fragments.DrawerFromRightFragment">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="관심 유종"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:id="@+id/textView2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="휘발유"
+            android:id="@+id/button4"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="경유"
+            android:id="@+id/button5"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="고급휘발유"
+            android:id="@+id/button6"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시설 필터"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:id="@+id/textView3" />
+    </LinearLayout>
+
+    <!--<LinearLayout-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="편의점"-->
+    <!--android:id="@+id/button7"-->
+    <!--android:layout_weight="1" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="셀프"-->
+    <!--android:id="@+id/button8"-->
+    <!--android:layout_weight="1" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="직영점"-->
+    <!--android:id="@+id/button9"-->
+    <!--android:layout_weight="1" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="정비소"-->
+    <!--android:id="@+id/button10"-->
+    <!--android:layout_weight="1" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="세차"-->
+    <!--android:id="@+id/button11"-->
+    <!--android:layout_weight="1" />-->
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="편의점"
+            android:id="@+id/button25"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="셀프"
+            android:id="@+id/button26"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="직영점"
+            android:id="@+id/button28"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="정비소"
+            android:id="@+id/button27"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="세차"
+            android:id="@+id/button29"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</LinearLayout>

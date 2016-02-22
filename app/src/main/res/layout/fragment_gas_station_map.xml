@@ -168,8 +168,7 @@
             android:id="@+id/detail_view"
             android:layout_alignParentBottom="true"
             android:clickable="true"
-            android:background="@color/icons"
-            android:visibility="gone">
+            android:background="@color/icons">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -182,9 +181,21 @@
                     android:layout_height="wrap_content"
                     android:padding="12dp">
 
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_star_grey" />
+
+
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -219,6 +230,8 @@
                             android:textColor="@color/sub_text"
                             android:id="@+id/distance" />
                         </LinearLayout>
+                    </LinearLayout>
+
                     </LinearLayout>
 
                     <Button
@@ -324,6 +337,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -426,7 +443,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:src="@drawable/ic_view_list_white_24dp"
+                android:src="@drawable/find_ps_icon_list"
                 app:fabSize="mini"/>
 
             <android.support.design.widget.FloatingActionButton
@@ -435,7 +452,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:clickable="true"
-                android:src="@drawable/common_full_open_on_phone"
+                android:src="@drawable/find_ps_icon_magnifyin_glass"
                 app:fabSize="mini"/>
 
 
@@ -448,14 +465,29 @@
             android:layout_gravity="top|left"
             android:padding="20dp">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab3"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
 
-                android:clickable="true"
-                android:src="@drawable/common_full_open_on_phone"
-                app:fabSize="mini"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=" 3km"
+                    android:elevation="16dp"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:text="Action A"
+                    app:fabSize="mini"/>
+
+
+            </FrameLayout>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab4"
@@ -463,7 +495,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:clickable="true"
-                android:src="@drawable/common_full_open_on_phone"
+                android:src="@drawable/find_ps_icon_my_point"
                 app:fabSize="mini"/>
 
         </LinearLayout>

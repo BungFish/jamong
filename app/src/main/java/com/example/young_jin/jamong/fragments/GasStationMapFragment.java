@@ -655,6 +655,10 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
             }
 
+            if(item.getGasStation().isDirect().equals("Y")){
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), custom_marker)));
+            }
+
         }
 
         @Override

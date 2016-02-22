@@ -26,8 +26,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.MyViewHolder> 
     private Activity activity;
     private ClickListener clickListener;
     private String current;
-    private int previous;
-    private double selectedItem;
+    private int selectedItem;
 
     public CityAdapter(Activity activity) {
         inflater = LayoutInflater.from(activity);
@@ -117,4 +116,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.MyViewHolder> 
         this.position = position;
     }
 
+    public int getSelectedItem() {
+        return selectedItem;
+    }
 }

@@ -9,11 +9,11 @@
         android:title="목록보기"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/search"
-        android:orderInCategory="200"
-        android:icon="@drawable/places_ic_search"
-        android:title="검색설정"
-        android:actionViewClass="android.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom"/>
+    <!--<item-->
+        <!--android:id="@+id/search"-->
+        <!--android:orderInCategory="200"-->
+        <!--android:icon="@drawable/places_ic_search"-->
+        <!--android:title="검색설정"-->
+        <!--android:actionViewClass="android.widget.SearchView"-->
+        <!--app:showAsAction="collapseActionView|ifRoom"/>-->
 </menu>

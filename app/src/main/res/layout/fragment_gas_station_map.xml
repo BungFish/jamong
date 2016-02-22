@@ -32,6 +32,11 @@
             <!--android:id="@+id/my_location" />-->
     <!--</LinearLayout>-->
 
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:gravity="center|bottom"
-            android:background="@color/icons">
+            android:background="@color/icons"
+            android:visibility="gone">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -407,5 +413,61 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:padding="20dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_view_list_white_24dp"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:src="@drawable/common_full_open_on_phone"
+                app:fabSize="mini"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:padding="20dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:clickable="true"
+                android:src="@drawable/common_full_open_on_phone"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:src="@drawable/common_full_open_on_phone"
+                app:fabSize="mini"/>
+
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>

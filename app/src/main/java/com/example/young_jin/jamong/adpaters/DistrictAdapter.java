@@ -33,11 +33,14 @@ public class DistrictAdapter extends RecyclerView.Adapter<DistrictAdapter.MyView
         this.activity = activity;
 
         this.data = new ArrayList<String>(Arrays.asList(activity.getResources().getStringArray(R.array.district)));
+        data.add(0, "전체");
     }
 
     public void setData(int id){
         Log.i("========", id + "");
         this.data = new ArrayList<String>(Arrays.asList(activity.getResources().getStringArray(id)));
+        data.add(0, "전체");
+
         notifyDataSetChanged();
     }
 

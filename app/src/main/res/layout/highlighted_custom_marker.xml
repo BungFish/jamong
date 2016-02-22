@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/marker_background"
         android:src="@drawable/highlighted_marker_background"
+        android:layout_gravity="center"
         android:adjustViewBounds="true" />
 
     <TextView

@@ -51,22 +51,22 @@
 
         </fragment>
 
-        <LinearLayout
-            android:layout_below="@+id/settings_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:layout_width="85dp"
-                android:layout_height="30dp"
-                android:text="반경: 3km"
-                android:textSize="@dimen/text_size_radius_button"
-                android:textColor="@color/icons"
-                android:layout_alignParentLeft="true"
-                android:layout_margin="12dp"
-                android:background="@color/secondary_text"
-                android:id="@+id/radius"
-                android:textAllCaps="false"/>
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_below="@+id/settings_layout"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<Button-->
+                <!--android:layout_width="85dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:text="반경: 3km"-->
+                <!--android:textSize="@dimen/text_size_radius_button"-->
+                <!--android:textColor="@color/icons"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_margin="12dp"-->
+                <!--android:background="@color/secondary_text"-->
+                <!--android:id="@+id/radius"-->
+                <!--android:textAllCaps="false"/>-->
+        <!--</LinearLayout>-->
 
         <View
             android:id="@+id/coverLyaout"
@@ -168,7 +168,8 @@
             android:id="@+id/detail_view"
             android:layout_alignParentBottom="true"
             android:clickable="true"
-            android:background="@color/icons">
+            android:background="@color/icons"
+            android:visibility="gone">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -181,13 +182,13 @@
                     android:layout_height="wrap_content"
                     android:padding="12dp">
 
-
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
+                            android:padding="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/fine_ps_star_grey" />
@@ -195,7 +196,7 @@
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -331,33 +332,41 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp">
+                        android:layout_marginLeft="16dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_map_point_grey"/>
 
                         <TextView
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Large Text"
                             android:textSize="14dp"
                             android:id="@+id/station_adress" />
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="12dp">
+                        android:layout_marginLeft="16dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_phone"/>
 
                         <TextView
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="02-2267-8025"
@@ -374,56 +383,130 @@
                     android:layout_height="match_parent"
                     android:background="@color/third_background">
 
-                    <TextView
-                        android:id="@+id/conv_store"
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/primary_text"
-                        android:text="편의점"
-                        android:textSize="12dp"
-                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:padding="10dp"
-                        android:layout_weight="1" />
+                        android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/self"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/primary_text"
-                        android:text="셀프"
-                        android:textSize="12dp"
-                        android:gravity="center"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_btn_cart"/>
 
-                    <TextView
-                        android:id="@+id/direct"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/primary_text"
-                        android:text="직영점"
-                        android:textSize="12dp"
-                        android:gravity="center"
-                        android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/conv_store"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/primary_text"
+                            android:text="편의점"
+                            android:textSize="12dp"
+                            android:gravity="center" />
 
-                    <TextView
-                        android:id="@+id/repair"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/primary_text"
-                        android:text="정비소"
-                        android:textSize="12dp"
-                        android:gravity="center"
-                        android:layout_weight="1" />
 
-                    <TextView
-                        android:id="@+id/wash"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/primary_text"
-                        android:text="세차"
-                        android:textSize="12dp"
-                        android:gravity="center"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_btn_oil"/>
+
+                        <TextView
+                            android:id="@+id/self"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/primary_text"
+                            android:text="셀프"
+                            android:textSize="12dp"
+                            android:gravity="center" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_btn_cart"/>
+
+                        <TextView
+                            android:id="@+id/direct"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/primary_text"
+                            android:text="직영점"
+                            android:textSize="12dp"
+                            android:gravity="center" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_btn_fix"/>
+
+                        <TextView
+                            android:id="@+id/repair"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/primary_text"
+                            android:text="정비소"
+                            android:textSize="12dp"
+                            android:gravity="center" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/fine_ps_btn_car"/>
+
+                        <TextView
+                            android:id="@+id/wash"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/primary_text"
+                            android:text="세차"
+                            android:textSize="12dp"
+                            android:gravity="center" />
+
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -444,7 +527,8 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:src="@drawable/find_ps_icon_list"
-                app:fabSize="mini"/>
+                app:fabSize="mini"
+                app:backgroundTint="@color/floatingButton"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab2"
@@ -453,7 +537,8 @@
                 android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:src="@drawable/find_ps_icon_magnifyin_glass"
-                app:fabSize="mini"/>
+                app:fabSize="mini"
+                app:backgroundTint="@color/floatingButton"/>
 
 
         </LinearLayout>
@@ -473,9 +558,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text=" 3km"
+                    android:text="3km"
+                    android:textSize="12dp"
                     android:elevation="16dp"
                     android:textColor="@android:color/white"
+                    android:id="@+id/radius_text"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <android.support.design.widget.FloatingActionButton
@@ -484,7 +571,8 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:text="Action A"
-                    app:fabSize="mini"/>
+                    app:fabSize="mini"
+                    app:backgroundTint="@color/floatingButton"/>
 
 
             </FrameLayout>
@@ -496,7 +584,8 @@
                 android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:src="@drawable/find_ps_icon_my_point"
-                app:fabSize="mini"/>
+                app:fabSize="mini"
+                app:backgroundTint="@color/floatingButton"/>
 
         </LinearLayout>
 

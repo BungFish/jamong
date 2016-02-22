@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.location.Address;
@@ -36,6 +37,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,6 +55,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -127,6 +130,11 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     private LayoutInflater layoutInflater;
     private DialogFragment adressDialogFragment;
     private FloatingActionButton fab;
+    private FloatingActionButton radiusButton;
+    private TextView radiusText;
+    private FloatingActionButton myLocationButton;
+    private boolean mMapIsTouched;
+    private TouchableWrapper mTouchView;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -158,6 +166,28 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     public GasStationMapFragment() {
 
 // Required empty public constructor
+    }
+
+    private class TouchableWrapper extends FrameLayout {
+        public TouchableWrapper(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            switch (ev.getAction()) {
+
+                case MotionEvent.ACTION_UP:
+                    mMapIsTouched = true;
+                    break;
+
+                case MotionEvent.ACTION_DOWN:
+                    mMapIsTouched = false;
+                    break;
+            }
+
+            return super.dispatchTouchEvent(ev);
+        }
     }
 
     @Override
@@ -274,6 +304,26 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 current_location, 12.9f));
 
+        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mClusterManager.onCameraChange(cameraPosition);
+
+
+                    if (cameraPosition.target != current_location) {
+                        if (mMapIsTouched) {
+                            if (myLocationButton.getBackgroundTintList() == ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary))) {
+                                myLocationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.floatingButton)));
+                            }
+                        }
+                    }
+
+
+
+            }
+        });
+
         addMapCircle(3000, current_location);
 
 //        map.addMarker(new MarkerOptions()
@@ -314,7 +364,9 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
-        final Button radiusButton = (Button) layout.findViewById(R.id.radius);
+        radiusButton = (FloatingActionButton) layout.findViewById(R.id.fab3);
+        radiusText = (TextView) layout.findViewById(R.id.radius_text);
+
         radiusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -337,7 +389,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                                 current_location, 14.5f), 1000, null);
-                                        radiusButton.setText("반경: 1km");
+                                        radiusText.setText("1km");
                                         break;
                                     case 1:
                                         radius = 3000;
@@ -349,7 +401,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.9f), 1000, null);
-                                        radiusButton.setText("반경: 3km");
+                                        radiusText.setText("3km");
 
                                         break;
                                     case 2:
@@ -362,7 +414,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.1f), 1000, null);
-                                        radiusButton.setText("반경: 5km");
+                                        radiusText.setText("5km");
                                         break;
                                     case 3:
                                         radius = 10000;
@@ -374,7 +426,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 11.2f), 1000, null);
-                                        radiusButton.setText("반경: 10km");
+                                        radiusText.setText("10km");
                                         break;
                                     case 4:
                                         radius = 20000;
@@ -386,7 +438,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 10.2f), 1000, null);
-                                        radiusButton.setText("반경: 20km");
+                                        radiusText.setText("20km");
                                         break;
                                 }
 
@@ -456,6 +508,16 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
+        myLocationButton = (FloatingActionButton) layout.findViewById(R.id.fab4);
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myLocationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                GasStationMapFragment.gotoMylocation();
+                mMapIsTouched = false;
+            }
+        });
+
         button3 = (Button) layout.findViewById(R.id.button3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -485,7 +547,12 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
         SearchSettingFragment.newInstance().setClickListener(this);
         AdressDialogFragment.newInstance(0).setClickListener(this);
 
-        return layout;
+        mTouchView = new TouchableWrapper(getActivity()
+
+            );
+            mTouchView.addView(layout);
+
+        return mTouchView;
 
     }
 
@@ -636,7 +703,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
     class MyClusterRenderer extends DefaultClusterRenderer<GasStationMarker> {
 
-        private static final int MIN_CLUSTER_SIZE = 5;
+        private static final int MIN_CLUSTER_SIZE = 4;
 
         public MyClusterRenderer(Context context, GoogleMap map,
                                  ClusterManager<GasStationMarker> clusterManager) {
@@ -753,7 +820,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
     public static void gotoMylocation(){
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                GasStationMapFragment.getCurrent_location(), 14.5f), 1000, null);
+                GasStationMapFragment.getCurrent_location(), map.getCameraPosition().zoom), 1000, null);
     }
 
     @Override

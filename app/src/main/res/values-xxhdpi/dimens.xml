@@ -13,4 +13,8 @@
 
     <dimen name="myham_width">330dp</dimen>
 
+    <dimen name="floating_padding">20dp</dimen>
+
+    <dimen name="rectangle_border_padding">4dp</dimen>
+
 </resources>

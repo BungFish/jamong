@@ -26,11 +26,12 @@ public class GasStation implements Parcelable {
     private String isDirect;
     private String isRepair;
     private String isWash;
+    private String isFavorite;
 
     public GasStation() {
     }
 
-    public GasStation(int index, double mLatitude, double mLongitude, String mTItle, double mDistance, String mAddress, String mPhone, String isConvstore, String isSelf, String isDirect, String isRepair, String isWash) {
+    public GasStation(int index, double mLatitude, double mLongitude, String mTItle, double mDistance, String mAddress, String mPhone, String isConvstore, String isSelf, String isDirect, String isRepair, String isWash, String isFavorite) {
 
         this.index = index;
         this.mLatitude = mLatitude;
@@ -44,6 +45,7 @@ public class GasStation implements Parcelable {
         this.isDirect = isDirect;
         this.isRepair = isRepair;
         this.isWash = isWash;
+        this.isFavorite = isFavorite;
 
     }
 
@@ -60,6 +62,7 @@ public class GasStation implements Parcelable {
         isDirect = in.readString();
         isRepair = in.readString();
         isWash = in.readString();
+        isFavorite = in.readString();
     }
 
     public static final Creator<GasStation> CREATOR = new Creator<GasStation>() {
@@ -112,6 +115,15 @@ public class GasStation implements Parcelable {
         return isRepair;
     }
 
+    public String isFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(String isFavorite){
+        this.isFavorite = isFavorite;
+    }
+
+
     public int getIndex() {
         return index;
     }
@@ -143,5 +155,6 @@ public class GasStation implements Parcelable {
         dest.writeString(isDirect);
         dest.writeString(isRepair);
         dest.writeString(isWash);
+        dest.writeString(isFavorite);
     }
 }

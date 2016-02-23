@@ -224,7 +224,8 @@ public class MainActivity extends ActionBarActivity {
                         station.getString("OPT_SELF_YN"),
                         station.getString("OPT_DIRECT_YN"),
                         station.getString("OPT_REPAIR_YN"),
-                        station.getString("OPT_WASH_YN")));
+                        station.getString("OPT_WASH_YN"),
+                        "Y"));
             }
 
         } catch (JSONException e) {

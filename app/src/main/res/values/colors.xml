@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--<color name="colorPrimary">#B5303C</color>-->
+    <!--<color name="colorPrimaryDark">#A02B35</color>-->
     <color name="colorPrimary">#FF4443</color>
-    <color name="colorPrimaryDark">#A02B35</color>
+    <color name="colorPrimaryDark">#FF0706</color>
     <color name="colorAccent">#FF4081</color>
     <color name="icons">#FFFFFF</color>
 
     <!--<color name="colorMapRadius">#353F51B5</color>-->
-    <color name="colorMapRadius">#15FF4443</color>
+    <color name="colorMapRadius">#25FF4443</color>
     <color name="colorMapStroke">#FF4443</color>
 
     <color name="selected_list_background_color">#25212121</color>

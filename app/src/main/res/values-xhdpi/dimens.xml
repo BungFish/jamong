@@ -42,4 +42,8 @@
     <dimen name="text_size_radius_button">12dp</dimen>
     <dimen name="text_size_main_button">14dp</dimen>
 
+    <dimen name="floating_padding">18dp</dimen>
+
+    <dimen name="rectangle_border_padding">3dp</dimen>
+
 </resources>

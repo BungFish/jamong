@@ -37,4 +37,7 @@
 
     <dimen name="layout_width">280dp</dimen>
     <dimen name="myham_width">300dp</dimen>
+
+    <dimen name="floating_padding">17dp</dimen>
+    <dimen name="rectangle_border_padding">2dp</dimen>
 </resources>

@@ -21,10 +21,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.telephony.PhoneNumberUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,7 +40,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +50,7 @@ import android.widget.Toast;
 
 import com.example.young_jin.jamong.AdressDialogFragment;
 import com.example.young_jin.jamong.R;
+import com.example.young_jin.jamong.activities.BookingActivity;
 import com.example.young_jin.jamong.activities.GasStationDetailActivity;
 import com.example.young_jin.jamong.activities.GasStationListActivity;
 import com.example.young_jin.jamong.activities.MainActivity;
@@ -130,11 +136,13 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     private LayoutInflater layoutInflater;
     private DialogFragment adressDialogFragment;
     private FloatingActionButton fab;
-    private FloatingActionButton radiusButton;
+    private Button radiusButton;
     private TextView radiusText;
     private FloatingActionButton myLocationButton;
     private boolean mMapIsTouched;
     private TouchableWrapper mTouchView;
+    private ImageView favorite;
+    private Button detail_button;
 
     public static Circle getMapCircle() {
         return mapCircle;
@@ -298,9 +306,10 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
         current_location = new LatLng(location.getLatitude(), location.getLongitude());
 
-        map.setMyLocationEnabled(true);
+//        map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
+        map.getUiSettings().setCompassEnabled(false);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 current_location, 12.9f));
 
@@ -311,14 +320,13 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                 mClusterManager.onCameraChange(cameraPosition);
 
 
-                    if (cameraPosition.target != current_location) {
-                        if (mMapIsTouched) {
-                            if (myLocationButton.getBackgroundTintList() == ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary))) {
-                                myLocationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.floatingButton)));
-                            }
+                if (cameraPosition.target != current_location) {
+                    if (mMapIsTouched) {
+                        if (myLocationButton.getBackgroundTintList() == ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary))) {
+                            myLocationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.floatingButton)));
                         }
                     }
-
+                }
 
 
             }
@@ -326,12 +334,22 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
         addMapCircle(3000, current_location);
 
-//        map.addMarker(new MarkerOptions()
-////                .title("현재위치")
-////                .snippet("현재위치입니다.")
-//                .position(current_location));
+        map.addMarker(new MarkerOptions()
+//                .title("현재위치")
+//                .snippet("현재위치입니다.")
+                .position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.find_ps_icon_red)));
 
-//        new CurrentLocationTask().execute(location);
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                mClusterManager.onMarkerClick(marker);
+
+
+                return true;
+            }
+        });
+
+        new CurrentLocationTask().execute(location);
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -364,8 +382,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
-        radiusButton = (FloatingActionButton) layout.findViewById(R.id.fab3);
-        radiusText = (TextView) layout.findViewById(R.id.radius_text);
+        radiusButton = (Button) layout.findViewById(R.id.radius);
 
         radiusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,7 +406,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                                 current_location, 14.5f), 1000, null);
-                                        radiusText.setText("1km");
+                                        radiusButton.setText("1km");
                                         break;
                                     case 1:
                                         radius = 3000;
@@ -401,7 +418,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.9f), 1000, null);
-                                        radiusText.setText("3km");
+                                        radiusButton.setText("3km");
 
                                         break;
                                     case 2:
@@ -414,7 +431,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 12.1f), 1000, null);
-                                        radiusText.setText("5km");
+                                        radiusButton.setText("5km");
                                         break;
                                     case 3:
                                         radius = 10000;
@@ -426,7 +443,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 11.2f), 1000, null);
-                                        radiusText.setText("10km");
+                                        radiusButton.setText("10km");
                                         break;
                                     case 4:
                                         radius = 20000;
@@ -438,7 +455,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                                         addMapCircle(radius, current_location);
                                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(current_location, 10.2f), 1000, null);
-                                        radiusText.setText("20km");
+                                        radiusButton.setText("20km");
                                         break;
                                 }
 
@@ -540,6 +557,41 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
             }
         });
 
+        favorite = (ImageView) layout.findViewById(R.id.favorite);
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectedClusterItem.getGasStation().isFavorite().equals("Y")){
+                    favorite.setImageDrawable(getResources().getDrawable(R.drawable.fine_ps_star_grey));
+                    selectedClusterItem.getGasStation().setIsFavorite("N");
+
+                } else {
+                    favorite.setImageDrawable(getResources().getDrawable(R.drawable.fine_ps_star_yellow));
+                    selectedClusterItem.getGasStation().setIsFavorite("Y");
+                }
+
+
+            }
+        });
+
+        detail_button = (Button) layout.findViewById(R.id.detail_button);
+        detail_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BookingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                GasStation gasStation = alist.get(Integer.valueOf(selectedClusterItem.getGasStation().getIndex()));
+
+                intent.putExtra("station", gasStation);
+
+                startActivity(intent);
+
+                getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left_half);
+
+            }
+        });
+
 //        settings_layout = (LinearLayout) layout.findViewById(R.id.settings_layout);
 //        settings_layout.startAnimation(slide_down_from_top_anim);
 
@@ -636,6 +688,9 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
                     @Override
                     public boolean onClusterItemClick(GasStationMarker clusterItem) {
+
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(clusterItem.getPosition().latitude, clusterItem.getPosition().longitude), map.getCameraPosition().zoom), 500, null);
 
 //                        if (selectedClusterItem != null) {
 //                            selectedClusterItem.setIsSelected(false);
@@ -805,7 +860,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            my_location_textview.setText("현재위치 : " + adress);
+//            my_location_textview.setText("현재위치 : " + adress);
         }
 
         @Override
@@ -826,6 +881,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     @Override
     public void itemClick(View view, int position) {
 
+        setMarkerSelected(markerList.get(position));
         populateDetailView(adapter.getItem(position));
 
         if(detail_view.getVisibility() == View.GONE){
@@ -843,7 +899,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 //        selectedClusterItem = markerList.get(position);
 //        selectedClusterItem.setIsSelected(true);
 
-        setMarkerSelected(markerList.get(position));
+
 
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(adapter.getItem(position).getmLatitude(), adapter.getItem(position).getmLongitude()), 14.5f), 1000, null);
@@ -963,6 +1019,14 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     }
     
     public void populateDetailView(GasStation gasStation){
+
+        if (gasStation != null) {
+            if (gasStation.isFavorite().equals("Y")) {
+                favorite.setImageDrawable(getResources().getDrawable(R.drawable.fine_ps_star_yellow));
+            } else {
+                favorite.setImageDrawable(getResources().getDrawable(R.drawable.fine_ps_star_grey));
+            }
+        }
         station_name.setText(gasStation.getmTItle());
         distance.setText(String.format("%.1fkm", gasStation.getmDistance() / 1000));
         station_adress.setText(gasStation.getmAddress());
@@ -1029,7 +1093,7 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
     public void addMapCircle(int radius, LatLng current_location){
         mapCircle = map.addCircle(new CircleOptions().radius(radius).center(current_location).fillColor(getResources().getColor(R.color.colorMapRadius)).
-                strokeColor(getResources().getColor(R.color.colorMapStroke)).strokeWidth(10f));
+                strokeColor(getResources().getColor(R.color.colorMapStroke)).strokeWidth(1f));
     }
 
     public void showDetailView(){
@@ -1068,6 +1132,33 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_gas_station, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setIconified(false);
+        searchView.clearFocus();
+        searchView.setQueryHint("주유소 찾기");
+//        ((EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text))
+//                .setHintTextColor(getResources().getColor(R.color.icons));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -1082,14 +1173,15 @@ public class GasStationMapFragment extends Fragment implements MainActivity.onKe
 
             MainActivity.drawerFragment.getmDrawerLayout().openDrawer(Gravity.RIGHT);
 
-
             return true;
         }
 
-        if (id == R.id.settings) {
-            MainActivity.drawerFragment.getmDrawerLayout().openDrawer(Gravity.RIGHT);
-            return true;
-        }
+//        if (id == R.id.action_search) {
+////            adressDialogFragment = AdressDialogFragment.newInstance(
+////                    0);
+////            adressDialogFragment.show(getFragmentManager(), "dialog");
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

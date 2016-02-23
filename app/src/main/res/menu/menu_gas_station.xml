@@ -2,9 +2,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.GasStationActivity">
+
+    <item android:id="@+id/action_search"
+        android:orderInCategory="5"
+        android:title="Search"
+        android:icon="@drawable/find_ps_icon_magnifyin_glass"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+
+    <!--<item-->
+        <!--android:id="@+id/adress_search"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:icon="@drawable/find_ps_icon_magnifyin_glass"-->
+        <!--android:title="목록보기"-->
+        <!--app:showAsAction="always" />-->
+
     <item
         android:id="@+id/view_station_list"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:icon="@drawable/find_ps_icon_setting"
         android:title="목록보기"
         app:showAsAction="always" />

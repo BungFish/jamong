@@ -51,23 +51,6 @@
 
         </fragment>
 
-        <!--<LinearLayout-->
-            <!--android:layout_below="@+id/settings_layout"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content">-->
-            <!--<Button-->
-                <!--android:layout_width="85dp"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:text="반경: 3km"-->
-                <!--android:textSize="@dimen/text_size_radius_button"-->
-                <!--android:textColor="@color/icons"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_margin="12dp"-->
-                <!--android:background="@color/secondary_text"-->
-                <!--android:id="@+id/radius"-->
-                <!--android:textAllCaps="false"/>-->
-        <!--</LinearLayout>-->
-
         <View
             android:id="@+id/coverLyaout"
             android:layout_width="match_parent"
@@ -189,6 +172,7 @@
 
                         <ImageView
                             android:padding="10dp"
+                            android:id="@+id/favorite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/fine_ps_star_grey" />
@@ -238,7 +222,7 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="길안내"
+                        android:text="자세히보기"
                         android:layout_alignParentRight="true"
                         android:id="@+id/detail_button"
                         style="@style/Widget.AppCompat.Button.Colored"/>
@@ -514,80 +498,103 @@
 
     </RelativeLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:padding="20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
+            <LinearLayout
+                android:layout_below="@+id/floating_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/find_ps_icon_list"
-                app:fabSize="mini"
-                app:backgroundTint="@color/floatingButton"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:clickable="true"
-                android:src="@drawable/find_ps_icon_magnifyin_glass"
-                app:fabSize="mini"
-                app:backgroundTint="@color/floatingButton"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
-            android:padding="20dp">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="@dimen/floating_padding">
+                <Button
+                    android:layout_width="55dp"
+                    android:layout_height="30dp"
                     android:text="3km"
-                    android:textSize="12dp"
-                    android:elevation="16dp"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/radius_text"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textSize="@dimen/text_size_radius_button"
+                    android:textColor="@color/icons"
+                    android:layout_alignParentLeft="true"
+                    android:background="@color/secondary_text"
+                    android:id="@+id/radius"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/floating_padding">
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab3"
+                    android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                    android:text="Action A"
-                    app:fabSize="mini"
+                    android:src="@drawable/find_ps_icon_list"
                     app:backgroundTint="@color/floatingButton"/>
 
+                <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:clickable="true"-->
+                <!--android:src="@drawable/find_ps_icon_magnifyin_glass"-->
+                <!--app:fabSize="mini"-->
+                <!--app:backgroundTint="@color/floatingButton"/>-->
 
-            </FrameLayout>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab4"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/floating_layout"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:clickable="true"
-                android:src="@drawable/find_ps_icon_my_point"
-                app:fabSize="mini"
-                app:backgroundTint="@color/floatingButton"/>
+                android:layout_alignParentLeft="true"
+                android:padding="@dimen/floating_padding">
 
-        </LinearLayout>
+                <!--<FrameLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="3km"-->
+                <!--android:textSize="12dp"-->
+                <!--android:elevation="16dp"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:id="@+id/radius_text"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall" />-->
+
+                <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:clickable="true"-->
+                <!--android:text="Action A"-->
+                <!--app:fabSize="mini"-->
+                <!--app:backgroundTint="@color/floatingButton"/>-->
+
+
+                <!--</FrameLayout>-->
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/find_ps_icon_my_point"
+                    app:backgroundTint="@color/floatingButton"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
 
     </android.support.design.widget.CoordinatorLayout>
 
